@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Member;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\City;
 use App\Models\District;
 use App\Models\Ward;
@@ -56,13 +57,28 @@ class AdminController extends Controller
 
         $member = Member::select()->where('id',Auth::guard('customer')->user()->id)->where('status', 1)->first();
 
-        $order = Order::orderBy('created_at', 'DESC')->paginate($limit);
+        $order = Order::where('domain', url('/'))->orderBy('created_at', 'DESC')->paginate($limit);
 
         $pagination = $order->appends(['limit' => $limit])->render('frontend.customer.components.paginate');
 
         $totalRevenue = Order::totalRevenue();
 
         return view('frontend.customer.order.list', compact('member', 'order', 'pagination', 'limit', 'totalRevenue'));
+    }
+
+    public function getDetailOrder(Request $request, $id)
+    {
+        $limit = $request->get('limit', 1);
+
+        $member = Member::select()->where('id',Auth::guard('customer')->user()->id)->where('status', 1)->first();
+
+        $detailOrder = OrderDetail::where('id_order', $id)->paginate($limit);
+
+        $pagination = $detailOrder->appends(['limit' => $limit])->render('frontend.customer.components.paginate');
+
+        $totalRevenue = Order::totalRevenue();
+
+        return view('frontend.customer.order.detail', compact('member', 'detailOrder', 'pagination', 'limit', 'totalRevenue'));
     }
 
     public function getTotalRevenue($param)
@@ -154,5 +170,10 @@ class AdminController extends Controller
         $ward = Ward::where('id_district', $id)->where('display_order', 1)->get();
 
         return view('backend.layouts.ajax.get-ward', compact('ward'))->render();
+    }
+
+    public function searchAll(Request $request)
+    {
+        dd($request->all());
     }
 }

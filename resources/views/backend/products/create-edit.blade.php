@@ -6,7 +6,7 @@
 	<div class="content">
 		<div class="clearfix"></div>
        	@include('flash::message')
-       	<form method="POST">
+       	<form action="{!! updateOrStoreRouteRender( @$module['action'], $module['module'], @$data) !!}" method="POST">
 			@csrf
 			@if(isUpdate(@$module['action']))
 		        {{ method_field('put') }}
@@ -18,9 +18,19 @@
 		                    <li class="active">
 		                        <a href="#activity" data-toggle="tab" aria-expanded="true">Thông tin sản phẩm</a>
 		                    </li>
+                            @if (!empty($inventory))
 							<li class="">
 		                        <a href="#activity1" data-toggle="tab" aria-expanded="true">Thông tin tồn kho</a>
 		                    </li>
+                            @endif
+                            <li @if(session('active_tab')=='thuoc-tinh') class="active" @endif data-tab="thuoc-tinh">
+
+		                    	<a href="#attributes" data-toggle="tab" aria-expanded="true">Thuộc tính</a>
+
+		                    </li>
+                            <li class="">
+                                <a href="#specifications" data-toggle="tab" aria-expanded="true">Thông số kỹ thuật</a>
+                            </li>
 		                </ul>
 		                <div class="tab-content">
 
@@ -29,89 +39,53 @@
 		                    		<div class="col-sm-12">
 										<div class="form-group">
 		                                    <label>Mã sản phẩm</label>
-		                                    <input type="text" class="form-control" name="code" id="code" value="{!! old('code', @$data->code) !!}">
+		                                    <input type="text" class="form-control" name="code" id="code" value="{!! old('code', @$data->code) !!}" @if(isUpdate(@$module['action'])) readonly @endif>
 		                                </div>
 		                    			<div class="form-group">
 		                                    <label>Tên sản phẩm</label>
 		                                    <input type="text" class="form-control" name="name" id="name" value="{!! old('name', @$data->name) !!}">
 		                                </div>
+                                        <div class="form-group">
+                                            <label for="">Đường dẫn tĩnh</label>
+                                            <input type="text" class="form-control" name="slug" id="slug" value="{{ old('slug', @$data->slug) }}">
+                                        </div>
 										<div class="form-group">
 		                                    <label>Tên khác của sản phẩm</label>
 		                                    <input type="text" class="form-control" name="otherName" id="otherName" value="{!! old('otherName', @$data->otherName) !!}">
 		                                </div>
                                     </div>
-									<div class="col-sm-6">
-										<div class="form-group">
-		                                    <label>Giá nhập</label>
-		                                    <input type="text" class="form-control" name="importPrice" id="importPrice" value="{!! old('importPrice', @$data->importPrice) !!}">
-		                                </div>
-										<div class="form-group">
-		                                    <label>Giá Cũ</label>
-		                                    <input type="text" class="form-control" name="oldPrice" id="oldPrice" value="{!! old('oldPrice', @$data->oldPrice) !!}">
-		                                </div>
-										<div class="form-group">
-		                                    <label>Giá bán lẻ</label>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+		                                    <label>Giá bán</label>
 		                                    <input type="text" class="form-control" name="price" id="price" value="{!! old('price', @$data->price) !!}">
 		                                </div>
-										<div class="form-group">
-		                                    <label>Giá bán buôn</label>
-		                                    <input type="text" class="form-control" name="wholesalePrice" id="wholesalePrice" value="{!! old('wholesalePrice', @$data->wholesalePrice) !!}">
+                                    </div>
+
+                                    <!-- <div class="col-sm-6">
+                                        <div class="form-group">
+		                                    <label>Giá khuyến mãi</label>
+		                                    <input type="text" class="form-control" name="sale_price" id="sale_price" value="{!! old('sale_price', @$data->sale_price) !!}">
 		                                </div>
-										<div class="form-group">
-		                                    <label>% thuế giá trị gia tăng</label>
-		                                    <input type="text" class="form-control" name="vat" id="vat" value="{!! old('vat', @$data->vat) !!}">
-		                                </div>
-										<div class="form-group">
-		                                    <label>Số điện thoại bảo hành</label>
-		                                    <input type="text" class="form-control" name="warrantyPhone" id="warrantyPhone" value="{!! old('warrantyPhone', @$data->warrantyPhone) !!}">
-		                                </div>
-									</div>
-									<div class="col-sm-6">
-										<div class="form-group">
-		                                    <label>Chiều rộng (cm)</label>
-		                                    <input type="text" class="form-control" name="width" id="width" value="{!! old('width', @$data->width) !!}">
-		                                </div>
-										<div class="form-group">
-		                                    <label>Chiều dài (cm)</label>
-		                                    <input type="text" class="form-control" name="length" id="length" value="{!! old('length', @$data->length) !!}">
-		                                </div>
-										<div class="form-group">
-		                                    <label>Chiều cao (cm)</label>
-		                                    <input type="text" class="form-control" name="height" id="height" value="{!! old('height', @$data->height) !!}">
-		                                </div>
-										<div class="form-group">
-		                                    <label>Đơn vị tính</label>
-		                                    <input type="text" class="form-control" name="unit" id="unit" value="{!! old('unit', @$data->unit) !!}">
-		                                </div>
-										<div class="form-group">
-		                                    <label>Trọng lượng vận chuyển (gram)</label>
-		                                    <input type="text" class="form-control" name="shippingWeight" id="shippingWeight" value="{!! old('shippingWeight', @$data->shippingWeight) !!}">
-		                                </div>
-										<div class="form-group">
-		                                    <label>Số tháng bảo hành</label>
-		                                    <input type="text" class="form-control" name="warranty" id="warranty" value="{!! old('warranty', @$data->warranty) !!}">
-		                                </div>
-									</div>
-									<div class="col-sm-12">
-										<div class="form-group">
-		                                    <label>Địa chỉ bảo hành</label>
-		                                    <input type="text" class="form-control" name="warrantyAddress" id="warrantyAddress" value="{!! old('warrantyAddress', @$data->warrantyAddress) !!}">
-		                                </div>
-										<div class="form-group">
+                                    </div> -->
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
 											<label for="">Mô tả ngắn</label>
-											<textarea name="description" class="form-control" rows="5">{{ old('description', @$data->description) }}</textarea>
+											<textarea name="description" class="form-control" rows="3">{{ old('description', @$data->description) }}</textarea>
 										</div>
-										<div class="form-group">
-											<label for="">Nội dung</label>
+                                        <div class="form-group">
+											<label for="">Mô tả</label>
 											<textarea name="content" class="content">{{ old('content', @$data->content) }}</textarea>
 										</div>
-									</div>
+
+
+                                    </div>
 		                    	</div>
 		                    </div>
-
+                            @if (!empty($inventory))
 							<div class="tab-pane" id="activity1">
-								<div class="row">
-									<div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-12">
 										<table class="table table-bordered table-striped table-hover">
 											<thead>
 												<tr>
@@ -123,48 +97,119 @@
 												</tr>
 											</thead>
 											<tbody>
+                                            @foreach ($inventory as $item)
+                                                @if ($item->depotId == NULL)
 												<tr>
-													<td>{{ $data->inventory->remain }}</td>
-													<td>{{ $data->inventory->shipping }}</td>
-													<td>{{ $data->inventory->holding }}</td>
-													<td>{{ $data->inventory->damaged }}</td>
-													<td>{{ $data->inventory->available }}</td>
+													<td>{{ $item->remain }}</td>
+													<td>{{ $item->shipping }}</td>
+													<td>{{ $item->holding }}</td>
+													<td>{{ $item->damaged }}</td>
+													<td>{{ $item->available }}</td>
 												</tr>
+                                                @endif
+                                            @endforeach
 											</tbody>
 										</table>
 										<div class="form-group">
 											<label for="">Tồn tại từng kho</label>
 										</div>
-										@if (!empty(@$data->inventory->depots))
-											<table class="table table-bordered table-striped table-hover">
-												<thead>
-													<tr>
-														<th>STT</th>
-														<th>số lượng tồn kho</th>
-														<th>số lượng đang giao hàng</th>
-														<th>số lượng đang tạm giữ</th>
-														<th>số lượng lỗi</th>
-														<th>Số lượng có thể bán</th>
-													</tr>
-												</thead>
-												<tbody>
-													@foreach (@$data->inventory->depots as $item)
-														<tr>
-															<td>{{ $loop->index + 1 }}</td>
-															<td>{{ $item->remain }}</td>
-															<td>{{ $item->shipping }}</td>
-															<td>{{ $item->holding }}</td>
-															<td>{{ $item->damaged }}</td>
-															<td>{{ $item->available }}</td>
-														</tr>
-													@endforeach
-												</tbody>
-											</table>
-										@endif
+                                        <table class="table table-bordered table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>số lượng tồn kho</th>
+                                                    <th>số lượng đang giao hàng</th>
+                                                    <th>số lượng đang tạm giữ</th>
+                                                    <th>số lượng lỗi</th>
+                                                    <th>Số lượng có thể bán</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach ($inventory as $item)
+                                                @if ($item->depotId != NULL)
+                                                <tr>
+                                                    <td>{{ $loop->index }}</td>
+                                                    <td>{{ $item->remain }}</td>
+                                                    <td>{{ $item->shipping }}</td>
+                                                    <td>{{ $item->holding }}</td>
+                                                    <td>{{ $item->damaged }}</td>
+                                                    <td>{{ $item->available }}</td>
+                                                </tr>
+                                                @endif
+                                            @endforeach
+                                            </tbody>
+                                        </table>
 									</div>
 								</div>
 							</div>
-							
+                            @endif
+
+                            <div class="tab-pane @if(session('active_tab')=='thuoc-tinh') active @endif" id="attributes">
+
+		                    	<div class="row">
+
+					                <div class="col-sm-12">
+                                        <div class="form-group">
+		                                    <label>Màu sắc</label>
+                                            <input type="text" class="form-control" name="color" value="{{ old('color', @$data->color) }}">
+                                        </div>
+                                        <div class="form-group">
+		                                    <label>Bộ sưu tập</label>
+                                            <input type="text" class="form-control" name="collection" value="{{ old('collection', @$data->collection) }}">
+                                        </div>
+                                        <div class="form-group">
+		                                    <label>Nhà thiết kế</label>
+                                            <input type="text" class="form-control" name="designer" value="{{ old('designer', @$data->designer) }}">
+                                        </div>
+                                        <div class="form-group">
+		                                    <label>Chất liệu</label>
+                                            <input type="text" class="form-control" name="fabric_material" value="{{ old('fabric_material', @$data->fabric_material) }}">
+                                        </div>
+						            </div>
+
+		                    	</div>
+
+		                    </div>
+
+                            <div class="tab-pane" id="specifications">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <textarea name="specification" class="content">{!! old('specification', @$data->specification) !!}</textarea>
+                                        </div>
+                                        <div class="form-group">
+											<label for="">Chi tiết sản phẩm</label>
+                                            <?php $detailProduct = json_decode(@$data->detailProduct) ?>
+											<div class="repeater" id="repeater">
+                                                <table class="table table-bordered table-hover detail-product">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 30px">STT</th>
+                                                            <th>Tiêu đề</th>
+                                                            <th>Nội dung</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="sortable">
+                                                        @if (!empty($detailProduct))
+                                                            @foreach ($detailProduct as $key => $value)
+                                                                <?php $index = $loop->index + 1 ; ?>
+                                                                @include('backend.repeater.row-detail_product')
+                                                            @endforeach
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                                <div class="text-right">
+                                                    <button class="btn btn-primary"
+                                                        onclick="repeater(event,this,'{{ route('get.layout') }}','.index', 'detail_product', '.detail-product')">Thêm
+                                                    </button>
+                                                </div>
+                                            </div>
+										</div>
+                                     </div>
+                                </div>
+                            </div>
+
 		                </div>
 		            </div>
 				</div>
@@ -175,13 +220,13 @@
 		                </div>
 		                <div class="box-body">
 		                    <div class="form-group">
-                                {{-- <label class="custom-checkbox">
+                                <label class="custom-checkbox">
 		                        	@if(isUpdate(@$module['action']))
 		                            	<input type="checkbox" name="status" value="1" {{ @$data->status == 1 ? 'checked' : null }}> Hiển thị
 		                            @else
 		                            	<input type="checkbox" name="status" value="1" checked> Hiển thị
 		                            @endif
-		                        </label> --}}
+		                        </label>
 								<label class="custom-checkbox">
 									@if(isUpdate(@$module['action']))
 		                            	<input type="checkbox" name="showHot" value="1" {{ @$data->showHot === 1 ? 'checked' : null }}>Sản phẩm hot
@@ -208,6 +253,40 @@
 		                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Lưu lại</button>
 		                    </div>
 		                </div>
+		            </div>
+
+                    <div class="box box-success category-box">
+
+		                <div class="box-header with-border">
+
+		                    <h3 class="box-title">Danh mục sản phẩm </h3>
+
+		                </div>
+
+		                <div class="box-body checkboxlist">
+
+		                    @if (!empty($categories))
+
+		                        @foreach ($categories as $item)
+
+		                            @if ($item->parentId == 0)
+
+		                                <label class="custom-checkbox">
+
+		                                    <input type="checkbox" class="category" name="categoryId" value="{{ $item->categoryId }}" {{ $item->categoryId == @$data->categoryId ? 'checked' : null }}> {{ $item->name }}
+
+		                                 </label>
+
+		                                 <?php checkBoxCategory( $categories, $item->categoryId, $item, @$data->categoryId ) ?>
+
+		                            @endif
+
+		                        @endforeach
+
+		                    @endif
+
+		                </div>
+
 		            </div>
 
 		            <div class="box box-success">

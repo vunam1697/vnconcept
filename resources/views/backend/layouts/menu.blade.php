@@ -15,7 +15,7 @@
     </a>
 </li>
 
-<li class="treeview {{ Request::segment(2) === 'category' || Request::segment(2) === 'products' ? 'active' : null }}">
+<li class="treeview {{ Request::segment(2) === 'category' || Request::segment(2) === 'products' || Request::segment(2) === 'category-filter' || Request::segment(2) === 'filter' ? 'active' : null }}">
     <a href="#">
         <i class="fa fa-building" aria-hidden="true"></i> <span>Sản phẩm</span>
         <span class="pull-right-container">
@@ -28,6 +28,43 @@
         </li>
         <li class="{{ Request::segment(2) === 'category' ? 'active' : null }}">
             <a href="{{ route('category.index') }}"><i class="fa fa-circle-o"></i> Danh mục</a>
+        </li>
+        <li class="{{ Request::segment(2) === 'category-filter' ? 'active' : null }}">
+            <a href="{{ route('list-category-filter') }}"><i class="fa fa-circle-o"></i> Bộ lọc</a>
+        </li>
+    </ul>
+</li>
+
+<li class="treeview {{ Request::segment(2) === 'category-rooms' || Request::segment(2) === 'rooms' ? 'active' : null }}">
+    <a href="#">
+        <i class="fa fa-building" aria-hidden="true"></i> <span>Rooms</span>
+        <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::segment(2) === 'rooms' ? 'active' : null }}">
+            <a href="{{ route('rooms.index') }}"><i class="fa fa-circle-o"></i> Danh sách</a>
+        </li>
+        <li class="{{ Request::segment(2) === 'category-rooms' ? 'active' : null }}">
+            <a href="{{ route('category-rooms.index') }}"><i class="fa fa-circle-o"></i> Danh mục</a>
+        </li>
+    </ul>
+</li>
+
+<li class="treeview {{ Request::segment(2) === 'category-collection' || Request::segment(2) === 'collection' ? 'active' : null }}">
+    <a href="#">
+        <i class="fa fa-building" aria-hidden="true"></i> <span>Collection</span>
+        <span class="pull-right-container">
+        <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="{{ Request::segment(2) === 'collection' ? 'active' : null }}">
+            <a href="{{ route('collection.index') }}"><i class="fa fa-circle-o"></i> Danh sách</a>
+        </li>
+        <li class="{{ Request::segment(2) === 'category-collection' ? 'active' : null }}">
+            <a href="{{ route('category-collection.index') }}"><i class="fa fa-circle-o"></i> Danh mục</a>
         </li>
     </ul>
 </li>

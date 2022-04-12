@@ -26,6 +26,13 @@ class LoginController extends Controller
 
         if(Auth::guard('customer')->attempt($credentials))
         {
+            if ($request->remember == 1) {
+                setcookie('status', 1, time()+31556926);
+                setcookie('email', $request->email, time()+31556926);
+                setcookie('password', $request->password, time()+31556926);
+            } else {
+                setcookie('status', 0, time()+31556926);
+            }
             return redirect()->route('admin.index')->with([
                 'level' => 'success',
                 'message' => 'Đăng nhập thành công'

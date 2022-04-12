@@ -10,7 +10,10 @@ class Categories extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['categoryId', 'parentId','code','name','order', 'showHome', 'showHomeOrder', 'privateId','image', 'content'];
+    protected $fillable = [
+        'categoryId', 'parentId','code','name', 'slug','order', 'showHome', 'showHomeOrder', 'privateId','image', 
+        'banner', 'content', 'type'
+    ];
 
 
     public function get_child_cate()
@@ -21,6 +24,11 @@ class Categories extends Model
     public function getParent()
     {
         return $this->where('categoryId', $this->parentId)->first();
+    }
+
+    public function get_child()
+    {
+        return $this->where('parentId', $this->id)->get();
     }
 
 }

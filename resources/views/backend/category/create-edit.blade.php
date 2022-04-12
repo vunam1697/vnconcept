@@ -40,7 +40,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label for="">Banner</label>
+                                                <div class="image">
+                                                <div class="image__thumbnail">
+                                                    <img src="{{ !empty(@$data->banner) ? @$data->banner : __IMAGE_DEFAULT__ }}"
+                                                            data-init="{{ __IMAGE_DEFAULT__ }}">
+                                                    <a href="javascript:void(0)" class="image__delete" onclick="urlFileDelete(this)">
+                                                        <i class="fa fa-times"></i></a>
+                                                    <input type="hidden" value="{{ old('banner', @$data->banner) }}" name="banner"/>
+                                                    <div class="image__button" onclick="fileSelect(this)">
+                                                        <i class="fa fa-upload"></i>
+                                                        Upload
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
                                         @if (!empty(@$data->parentId))
                                         <div class="form-group">
                                             <label for="">Danh mục cha</label>
@@ -56,8 +74,19 @@
                                             <input type="text" class="form-control" name="name" id="name" value="{{ old('name', @$data->name) }}">
                                         </div>
                                         <div class="form-group">
+                                            <label for="">Đường dẫn tĩnh</label>
+                                            <input type="text" class="form-control" name="slug" id="slug" value="{{ old('slug', @$data->slug) }}">
+                                        </div>
+                                        <div class="form-group">
                                             <label for="">Mô tả</label>
                                             <textarea class="form-control" name="content" rows="5">{!! old('content', @$data->content) !!}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="custom-checkbox">
+                                                <input type="checkbox" name="showHome" value="1" {{ @$data->showHome == 1 ? 'checked' : null }}> Hiển thị trang chủ
+                                            </label>
                                         </div>
                                     </div>
                                 </div>

@@ -16,4 +16,9 @@ class OrderDetail extends Model
     {
         return $this->belongsTo('App\Models\Products', 'id_product', 'id');
     }
+
+    public function Order()
+    {
+        return $this->belongsTo('App\Models\Order', 'id_order', 'id');
+    }
 }

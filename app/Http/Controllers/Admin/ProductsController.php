@@ -8,6 +8,7 @@ use DataTables;
 use Carbon\Carbon;
 use App\Models\Products;
 use App\Models\Inventory;
+use App\Models\Categories;
 
 class ProductsController extends Controller
 {
@@ -37,9 +38,10 @@ class ProductsController extends Controller
     protected function fields()
     {
         return [
-            'name' => 'required|unique:services,name',
+            'name' => 'required',
             'image' => 'required',
-            // 'category' => 'required',
+            'price' => 'required',
+            'categoryId' => 'required',
 
         ];
     }
@@ -48,10 +50,10 @@ class ProductsController extends Controller
     protected function messages()
     {
         return [
-            'name.required' => 'Tên dịch vụ không được bỏ trống.',
-            'image.required' => 'Bạn chưa chọn hình ảnh cho dịch vụ.',
-            // 'category.required' => 'Bạn chưa chọn danh mục dịch vụ.',
-            'name.unique' => 'Tên dịch vụ đã tồn tại',
+            'name.required' => 'Tên sản phẩm không được bỏ trống.',
+            'image.required' => 'Bạn chưa chọn hình ảnh cho sản phẩm.',
+            'categoryId.required' => 'Bạn chưa chọn danh mục sản phẩm.',
+            'price.required' => 'Bạn chưa nhập giá'
         ];
     }
 
@@ -63,47 +65,48 @@ class ProductsController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $list_products = Products::orderBy('createdDateTime', 'DESC')->get();
+            return Datatables::of($list_products)
+                ->addColumn('checkbox', function ($data) {
+                    return '<input type="checkbox" name="chkItem[]" value="' . $data->id . '">';
+                })->addColumn('image', function ($data) {
+                    return '<img src="' . $data->image . '" class="img-thumbnail" width="50px" height="50px">';
+                })->addColumn('name', function ($data) {
+                    return $data->name;
+                })->addColumn('price', function ($data) {
+                    $price = 'Giá bán: '.number_format($data->price).'đ';
+                    if(!is_null($data->sale_price)){
+                        $price = $price.'<br>Giá KM:'.number_format($data->sale_price).'đ (-'.$data->sale.'%)';
+                    }
+                    return $price;
+                })->addColumn('status', function ($data) {
+                    if ($data->status == 1) {
+                        $status = ' <span class="label label-success">Hiển thị</span>';
+                    } else {
+                        $status = ' <span class="label label-danger">Không hiển thị</span>';
+                    }
+                    if ($data->showHot) {
+                        $status = $status . ' <span class="label label-primary">Nổi bật</span>';
+                    }
+                    if($data->showHome == 1){
+                        $status = $status . ' <span class="label label-primary">Hiển thị trang chủ</span>';
+                    }
+                    if($data->showNew == 1){
+                        $status = $status . ' <span class="label label-primary">Sản phẩm mới</span>';
+                    }
+                    return $status;
+                })->addColumn('action', function ($data) {
+                    return '<a href="' . route('products.edit', ['id' => $data->id ]) . '" title="Sửa">
+                            <i class="fa fa-pencil fa-fw"></i> Sửa
+                        </a>
+                        ';
+                })->rawColumns(['checkbox', 'image', 'status', 'action', 'name', 'price'])
+                ->addIndexColumn()
+                ->make(true);
+        }
         $data['module'] = $this->module();
-        $parameter = getParameter();
-        $postArray = array(
-            "version" => "2.0",
-            "appId" => $parameter['appId'],
-            "businessId" => $parameter['businessId'],
-            "accessToken" => $parameter['accessToken'],
-        );
-
-        $curl = curl_init("https://open.nhanh.vn/api/product/search");
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $postArray);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-
-        $curlResult = curl_exec($curl);
-
-        if(! curl_error($curl)) {
-            // success
-            $response = json_decode($curlResult);
-
-            $data['data'] = $response->data->products;
-
-            return view("backend.{$this->module()['module']}.list", $data);
-        } else {
-            // failed, cannot connect nhanh.vn
-            $response = new \stdClass();
-            $response->code = 0;
-            $response->messages = array(curl_error($curl));
-        }
-        curl_close($curl);
-
-        if ($response->code == 1) {
-            // send product successfully
-        } else {
-            // failed, show error messages
-            if(isset($response->messages) && is_array($response->messages)) {
-                foreach($response->messages as $message) {
-                    flash($message)->error();
-                }
-            }
-        }
+        return view("backend.{$this->module()['module']}.list", $data);
     }
 
     /**
@@ -114,6 +117,8 @@ class ProductsController extends Controller
     public function create()
     {
         $data['module'] = $this->module();
+
+        $data['categories'] = Categories::where('type', 'product_category')->get();
 
         return view("backend.{$this->module()['module']}.create-edit", $data);
     }
@@ -127,26 +132,22 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         $fields        = $this->fields();
-        $fields['name'] = 'required|unique:services,name,'.$request->name;
+        $fields['name'] = 'required|unique:products,name,'.$request->name;
         $this->validate($request, $fields, $this->messages());
 
-        $data = $request->all();
-        $data['slug'] = $this->createSlug(str_slug($request->name));
-        $data['hot'] = $request->hot == 1 ? 1 : null;
-        $data['is_display_home'] = $request->is_display_home == 1 ? 1 : null;
-        $data['status'] = $request->status == 1 ? 1 : null;
+        $input = $request->all();
+        $input['typeId'] = 2;
+        $input['detailProduct'] = !empty($request->detailProduct) ? json_encode($request->detailProduct) : null;
+        $input['status'] = $request->status == 1 ? 1 : null;
+        $input['showHot'] = $request->showHot == 1 ? 1 : null;
+        $input['showNew'] = $request->showNew == 1 ? 1 : null;
+        $input['showHome'] = $request->showHome == 1 ? 1 : null;
 
-        $services = Service::create($data);
-
-        if(!empty($request->category)){
-            foreach ($request->category as $item) {
-                ServiceCategory::create(['id_category'=> $item, 'id_service'=> $services->id]);
-            }
-        }
+        $data = Products::create($input);
 
         flash('Thêm mới thành công.')->success();
 
-        return redirect()->route($this->module()['module'].'.edit', $services);
+        return redirect()->route($this->module()['module'].'.edit', $data);
     }
 
     /**
@@ -161,49 +162,13 @@ class ProductsController extends Controller
             'action' => 'update'
         ]);
 
-        $parameter = getParameter();
-        $postArray = array(
-            "version" => "2.0",
-            "appId" => $parameter['appId'],
-            "businessId" => $parameter['businessId'],
-            "accessToken" => $parameter['accessToken'],
-        );
+        $data['categories'] = Categories::where('type', 'product_category')->get();
 
-        $curl = curl_init("https://open.nhanh.vn/api/product/detail?data=" . $id);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $postArray);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $data['data'] = Products::findOrFail($id);
 
-        $curlResult = curl_exec($curl);
+        $data['inventory'] = Inventory::where('productId', $data['data']->idNhanh)->get();
 
-        if(! curl_error($curl)) {
-            // success
-            $response = json_decode($curlResult);
-
-            foreach ($response->data as $item) {
-                $data['data'] = $item;
-            }
-
-            return view("backend.{$this->module()['module']}.create-edit", $data);
-
-        } else {
-            // failed, cannot connect nhanh.vn
-            $response = new \stdClass();
-            $response->code = 0;
-            $response->messages = array(curl_error($curl));
-        }
-        curl_close($curl);
-
-        if ($response->code == 1) {
-            // send product successfully
-        } else {
-            // failed, show error messages
-            if(isset($response->messages) && is_array($response->messages)) {
-                foreach($response->messages as $message) {
-                    flash($message)->error();
-                }
-            }
-        }
+        return view("backend.{$this->module()['module']}.create-edit", $data);
 
     }
 
@@ -217,23 +182,26 @@ class ProductsController extends Controller
     public function update(Request $request, $id)
     {
     	$fields        = $this->fields();
-        $fields['name'] = 'required|unique:services,name,'.$id;
         $this->validate($request, $fields, $this->messages());
 
-        $input = $request->all();
-        $input['more_image'] = !empty($request->gallery) ? json_encode($request->gallery) : null;
-        $input['status'] = $request->status == 1 ? 1 : null;
-        $input['hot'] = $request->hot == 1 ? 1 : null;
-        $input['is_display_home'] = $request->is_display_home == 1 ? 1 : null;
-
-        $services = Service::findOrFail($id)->update($input);
-
-        if(!empty($request->category)){
-            ServiceCategory::where('id_service', $id )->delete();
-            foreach ($request->category as $item) {
-                ServiceCategory::create(['id_category'=> $item, 'id_service'=> $id ]);
+        if(!empty($request->sale_price)){
+            if($request->price < $request->sale_price){
+                return redirect()->back()->withInput()->withErrors(['Giá khuyến mại không thể cao hơn giá bán']);
             }
         }
+
+        $input = $request->all();
+        // $input['slug'] = $this->createSlug(str_slug($request->name));
+        $sale = !is_null($request->sale_price) && intval($request->sale_price) >= 0 && intval($request->price) >= 0 ? (1 -intval($request->sale_price) / intval($request->price)) * 100 : 0;
+        $input['sale'] = $sale;
+        $input['regular_price'] = !empty($request->sale_price) ? $request->sale_price : $request->price;
+        $input['detailProduct'] = !empty($request->detailProduct) ? json_encode($request->detailProduct) : null;
+        $input['status'] = $request->status == 1 ? 1 : null;
+        $input['showHot'] = $request->showHot == 1 ? 1 : null;
+        $input['showNew'] = $request->showNew == 1 ? 1 : null;
+        $input['showHome'] = $request->showHome == 1 ? 1 : null;
+
+        Products::findOrFail($id)->update($input);
 
         flash('Cập nhật thành công.')->success();
 
@@ -251,8 +219,7 @@ class ProductsController extends Controller
     {
         flash('Xóa thành công.')->success();
 
-        Service::destroy($id);
-        // ServiceCategory::where('id_service', $id)->delete();
+        Products::destroy($id);
 
         return redirect()->back();
     }
@@ -261,53 +228,13 @@ class ProductsController extends Controller
     {
         if(!empty($request->chkItem)){
             foreach ($request->chkItem as $id) {
-                Service::destroy($id);
-                // ServiceCategory::where('id_service', $id)->delete();
+                Products::destroy($id);
             }
             flash('Xóa thành công.')->success();
             return back();
         }
         flash('Bạn chưa chọn dữ liệu cần xóa.')->error();
         return back();
-    }
-
-
-    public function getAjaxSlug(Request $request)
-    {
-        $slug = str_slug($request->slug);
-        $id = $request->id;
-        $post = Service::find($id);
-        $post->slug = $this->createSlug($slug, $id);
-        $post->save();
-        return $this->createSlug($slug, $id);
-    }
-
-    public function createSlug($slugPost, $id = null)
-    {
-        $slug = $slugPost;
-        $index = 1;
-        $baseSlug = $slug;
-        while ($this->checkIfExistedSlug($slug, $id)) {
-            $slug = $baseSlug . '-' . $index++;
-        }
-
-        if (empty($slug)) {
-            $slug = time();
-        }
-
-        return $slug;
-    }
-
-
-    public function checkIfExistedSlug($slug, $id = null)
-    {
-        if($id != null) {
-            $count = Service::where('id', '!=', $id)->where('slug', $slug)->count();
-            return $count > 0;
-        }else{
-            $count = Service::where('slug', $slug)->count();
-            return $count > 0;
-        }
     }
 
     public function syncData()
@@ -331,86 +258,101 @@ class ProductsController extends Controller
             // success
             $response = json_decode($curlResult);
 
+            $arrayCate = [];
             $products = Products::all();
 
+            foreach ($products as $item) {
+                $arrayCate[] = $item->idNhanh;
+            }
+
             foreach ($response->data->products as $key => $item) {
-
-                Products::create([
-                    'idNhanh' => $item->idNhanh,
-                    'privateId' => $item->privateId,
-                    'parentId' => $item->parentId,
-                    'brandId' => $item->brandId,
-                    'brandName' => $item->brandName,
-                    'typeId' => $item->typeId,
-                    'typeName' => $item->typeName,
-                    'avgCost' => $item->avgCost,
-                    'importType' => $item->importType,
-                    'importTypeLabel' => $item->importTypeLabel,
-                    'merchantCategoryId' => $item->merchantCategoryId,
-                    'merchantProductId' => $item->merchantProductId,
-                    'categoryId' => $item->categoryId,
-                    'code' => $item->code,
-                    'barcode' => $item->barcode,
-                    'name' => $item->name,
-                    'otherName' => $item->otherName,
-                    'importPrice' => $item->importPrice,
-                    'oldPrice' => $item->oldPrice,
-                    'price' => $item->price,
-                    'wholesalePrice' => $item->wholesalePrice,
-                    'thumbnail' => $item->thumbnail,
-                    'image' => $item->image,
-                    'status' => $item->status,
-                    'showHot' => $item->showHot,
-                    'showNew' => $item->showNew,
-                    'showHome' => $item->showHome,
-                    'order' => $item->order,
-                    'previewLink' => $item->previewLink,
-                    'shippingWeight' => $item->shippingWeight,
-                    'width' => $item->width,
-                    'length' => $item->length,
-                    'height' => $item->height,
-                    'vat' => $item->vat,
-                    'createdDateTime' => $item->createdDateTime,
-                    'warrantyAddress' => $item->warrantyAddress,
-                    'warrantyPhone' => $item->warrantyPhone,
-                    'warranty' => $item->warranty,
-                    'countryName' => $item->countryName,
-                    'unit' => $item->unit,
-                    'advantages' => isset($item->advantages) ? $item->advantages : null,
-                    'description' => isset($item->description) ? $item->description : null,
-                    'content' => isset($item->content) ? $item->content : null,
-                ]);
-
-                if (!empty($item->inventory)) {
-                    Inventory::create([
-                        'productId' => $key,
-                        'depotId' => null,
-                        'remain' => $item->inventory->remain,
-                        'shipping' => $item->inventory->shipping,
-                        'damaged' => $item->inventory->damaged,
-                        'holding' => $item->inventory->holding,
-                        'warranty' => $item->inventory->warranty,
-                        'warrantyHolding' => $item->inventory->warrantyHolding,
-                        'available' => $item->inventory->available,
+                if (in_array($item->idNhanh, $arrayCate)) {
+                    Products::where('idNhanh', $item->idNhanh)->update([
+                        'idNhanh' => $item->idNhanh,
+                        // 'privateId' => $item->privateId,
+                        'parentId' => $item->parentId,
+                        'typeId' => $item->typeId,
+                        'typeName' => $item->typeName,
+                        'code' => $item->code,
+                        'name' => $item->name,
+                        'slug' => str_slug($item->name),
+                        'otherName' => $item->otherName,
+                        'description' => isset($item->description) ? $item->description : null,
+                        'content' => isset($item->content) ? $item->content : null,
                     ]);
+                    if (!empty($item->inventory)) {
+                        Inventory::where('productId', $item->idNhanh)->update([
+                            'depotId' => null,
+                            'remain' => $item->inventory->remain,
+                            'shipping' => $item->inventory->shipping,
+                            'damage' => $item->inventory->damaged,
+                            'holding' => $item->inventory->holding,
+                            'warranty' => $item->inventory->warranty,
+                            'warrantyHolding' => $item->inventory->warrantyHolding,
+                            'available' => $item->inventory->available,
+                        ]);
 
-                    if (!empty($item->inventory->depots)) {
-                        foreach ($item->inventory->depots as $keyInventory => $value) {
-                            Inventory::create([
-                                'productId' => $key,
-                                'depotId' => $keyInventory,
-                                'remain' => $value->remain,
-                                'shipping' => $value->shipping,
-                                'damaged' => $value->damaged,
-                                'holding' => $value->holding,
-                                'warranty' => $value->warranty,
-                                'warrantyHolding' => $value->warrantyHolding,
-                                'available' => $value->available,
-                            ]);
+                        if (!empty($item->inventory->depots)) {
+                            foreach ($item->inventory->depots as $keyInventory => $value) {
+                                Inventory::where('productId', $item->idNhanh)->where('depotId', $keyInventory)->update([
+                                    'remain' => $value->remain,
+                                    'shipping' => $value->shipping,
+                                    'damage' => $value->damaged,
+                                    'holding' => $value->holding,
+                                    'warranty' => $value->warranty,
+                                    'warrantyHolding' => $value->warrantyHolding,
+                                    'available' => $value->available,
+                                ]);
+                            }
                         }
                     }
+                } else {
+                    Products::create([
+                        'idNhanh' => $item->idNhanh,
+                        // 'privateId' => $item->privateId,
+                        'parentId' => $item->parentId,
+                        'typeId' => $item->typeId,
+                        'typeName' => $item->typeName,
+                        'code' => $item->code,
+                        'name' => $item->name,
+                        'slug' => str_slug($item->name),
+                        'otherName' => $item->otherName,
+                        'description' => isset($item->description) ? $item->description : null,
+                        'content' => isset($item->content) ? $item->content : null,
+                    ]);
 
+                    if (!empty($item->inventory)) {
+                        Inventory::create([
+                            'productId' => $key,
+                            'depotId' => null,
+                            'remain' => $item->inventory->remain,
+                            'shipping' => $item->inventory->shipping,
+                            'damage' => $item->inventory->damaged,
+                            'holding' => $item->inventory->holding,
+                            'warranty' => $item->inventory->warranty,
+                            'warrantyHolding' => $item->inventory->warrantyHolding,
+                            'available' => $item->inventory->available,
+                        ]);
+
+                        if (!empty($item->inventory->depots)) {
+                            foreach ($item->inventory->depots as $keyInventory => $value) {
+                                Inventory::create([
+                                    'productId' => $key,
+                                    'depotId' => $keyInventory,
+                                    'remain' => $value->remain,
+                                    'shipping' => $value->shipping,
+                                    'damage' => $value->damaged,
+                                    'holding' => $value->holding,
+                                    'warranty' => $value->warranty,
+                                    'warrantyHolding' => $value->warrantyHolding,
+                                    'available' => $value->available,
+                                ]);
+                            }
+                        }
+
+                    }
                 }
+
             }
 
             flash('Đồng bộ dữ liệu thành công.')->success();

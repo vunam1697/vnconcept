@@ -125,7 +125,7 @@ function listCate($data, $parent_id = null, $str = '')
 {
     foreach ($data as $value) {
         $id   = $value->id;
-        $code = $value->code;
+        $code = $value->code ? $value->code : '';
         $name = $value->name;
         if ($value->parentId == $parent_id) {
             if ($str == '') {
@@ -140,7 +140,7 @@ function listCate($data, $parent_id = null, $str = '')
             } else {
                 echo '<td></td>';
             }
-            echo '<td>' . $code . '</a></td>';
+            echo '<td>' . $code . '</td>';
             echo '<td>
                     <a class="text-default" href="' . route('category.edit', $id) . '" title="Sửa">' . $strName . '</a>
                 </td>';
@@ -154,12 +154,12 @@ function listCate($data, $parent_id = null, $str = '')
     }
 }
 
-function listCatePost($data, $parent_id = 0, $str = '')
+function listCateRoom($data, $parent_id = 0, $str = '')
 {
     foreach ($data as $value) {
         $id   = $value->id;
         $name = $value->name;
-        if ($value->parent_id == $parent_id) {
+        if ($value->parentId == $parent_id) {
             if ($str == '') {
                 $strName = '<b>' . $str . $name . '</b>';
             } else {
@@ -169,17 +169,16 @@ function listCatePost($data, $parent_id = 0, $str = '')
             echo '<tr class="odd">';
             echo '<td><input type="checkbox" name="chkItem[]" value="' . $id . '"></td>';
             echo '<td>
-                        <a class="text-default" href="' . route('category-post.edit', $id) . '" title="Sửa">' . $strName . '</a></br>
-                        <a href="' . asset('danh-muc-tin-tuc/' . $value->slug) . '" target="_blank"> <i class="fa fa-hand-o-right" aria-hidden="true"></i> Link: ' . asset('danh-muc-tin-tuc/' . $value->slug) . ' </a>
+                        <a class="text-default" href="' . route('category-rooms.edit', $id) . '" title="Sửa">' . $strName . '</a>
                     </td>';
-            echo ' <td><a href="' . route('category-post.edit', $id) . '" title="Sửa"> <i class="fa fa-pencil fa-fw"></i> Sửa</a> &nbsp; &nbsp; &nbsp;
-                                <a href="javascript:;" class="btn-destroy" data-href="' . route('category-post.destroy', $id) . '" data-toggle="modal" data-target="#confim">
+            echo ' <td><a href="' . route('category-rooms.edit', $id) . '" title="Sửa"> <i class="fa fa-pencil fa-fw"></i> Sửa</a> &nbsp; &nbsp; &nbsp;
+                                <a href="javascript:;" class="btn-destroy" data-href="' . route('category-rooms.destroy', $id) . '" data-toggle="modal" data-target="#confim">
                                     <i class="fa fa-trash-o fa-fw"></i> Xóa
                                 </a>
                             </td>';
             echo '</tr>';
 
-            listCatePost($data, $id, $str . '---| ');
+            listCateRoom($data, $id, $str . '---| ');
         }
     }
 }
@@ -191,37 +190,37 @@ function checkBoxCategory($data, $id, $item, $list_id = null)
         foreach ($item->get_child_cate() as $value) {
             $checked = null;
             if (!empty($list_id)) {
-                if (in_array($value->id, $list_id)) {
+                if ($value->categoryId == $list_id) {
                     $checked = 'checked';
                 }
             }
-            if ($value->parent_id == $id) {
+            if ($value->parentId == $id) {
                 echo '<label class="custom-checkbox">
-                            <input type="checkbox" class="category" name="category[]" value="' . $value->id . '" ' . $checked . ' > ' . $value->name . '
+                            <input type="checkbox" class="category" name="categoryId" value="' . $value->categoryId . '" ' . $checked . ' > ' . $value->name . '
                         </label>';
-                checkBoxCategory($data, $value->id, $item);
+                checkBoxCategory($data, $value->categoryId, $item);
             }
         }
         echo '</div>';
     }
 }
 
-function checkBoxCategoryName($data, $id, $item, $list_id = null, $name = null)
+function checkBoxCategoryRooms($data, $id, $item, $list_id = null, $name = null)
 {
-    if (count($item->get_child_cate()) > 0) {
+    if (count($item->get_child()) > 0) {
         echo '<div style="padding-left:15px;">';
-        foreach ($item->get_child_cate() as $value) {
+        foreach ($item->get_child() as $value) {
             $checked = null;
             if (!empty($list_id)) {
-                if (in_array($value->id, $list_id)) {
+                if ($value->id == $list_id) {
                     $checked = 'checked';
                 }
             }
             if ($value->parent_id == $id) {
                 echo '<label class="custom-checkbox">
-                            <input type="checkbox" class="category" name="'.$name.'" value="' . $value->id . '" ' . $checked . ' > ' . $value->name . '
+                            <input type="checkbox" class="categoryId" name="'.$name.'" value="' . $value->id . '" ' . $checked . ' > ' . $value->name . '
                         </label>';
-                checkBoxCategory($data, $value->id, $item);
+                checkBoxCategoryRooms($data, $value->id, $item);
             }
         }
         echo '</div>';
@@ -271,7 +270,7 @@ function menuMulti($data, $parent_id = 0, $str = '---| ', $select = 0)
     foreach ($data as $value) {
         $id   = $value->id;
         $name = $value->name;
-        if ($value->parent_id == $parent_id) {
+        if ($value->parentId == $parent_id) {
             if ($select != 0 && $id == $select) {
                 echo '<option value=' . $id . ' selected> ' . $str . $value->name . ' </option>';
             } else {
@@ -357,4 +356,14 @@ function getOptions($key = null, $field = null)
     function DEFAULT_RANGE()
     {
         return [1, 2, 3, 5];
+    }
+
+    function filter()
+    {
+        $data = [
+            ['name' => 'Giá', 'value' => 'price'],
+            ['name' => 'Màu sắc', 'value' => 'color']
+        ];
+
+        return $data;
     }

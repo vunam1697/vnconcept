@@ -36,12 +36,14 @@
 
 	<link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/css/toastr.min.css">
 
-    {{-- <link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/css/custom.css"> --}}
+    <link rel="stylesheet" type="text/css" title="" href="{{ __BASE_URL__ }}/css/custom.css">
 
     @yield('css')
 
 </head>
 	<body>
+        <input type="hidden" name="base_url" value="{{url('/')}}">
+
 		<div class="loadingcover" style="display: none;">
 			<p class="csslder">
 				<span class="csswrap">
@@ -78,8 +80,12 @@
 
 		<script type="text/javascript" src="{{ __BASE_URL__ }}/js/toastr.min.js"></script>
 
-		@yield('script')
+        <script type="text/javascript" src="{{ __BASE_URL__ }}/js/customer.js"></script>
 
+		@yield('script')
+        <script type="text/javascript">
+            const loading = '<img src="{{ __BASE_URL__ }}/images/icons/loading.gif" />';
+        </script>
 		<script type="text/javascript">
 			$(document).ready(function(){
 				toastr.options = {

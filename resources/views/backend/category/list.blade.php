@@ -9,21 +9,25 @@
             <div class="box-body">
                 @include('flash::message')
                 <div class="btnAdd">
+                    <a href="{{ route($module['module'].'.create') }}">
+                        <fa class="btn btn-primary"><i class="fa fa-plus"></i> Thêm</fa>
+                    </a>
                     <a href="{{ route('category.sync-data') }}">
-                        <fa class="btn btn-primary"><i class="fa fa-plus"></i> Đồng bộ dữ liệu</fa>
+                        <fa class="btn btn-success"> Đồng bộ dữ liệu</fa>
                     </a>
                 </div>
                 <table id="example1" class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
-                            <th><input type="checkbox" name="chkAll" id="chkAll"></th>
-                            <th>Hình ảnh</th>
+                            <th width="20px"><input type="checkbox" name="chkAll" id="chkAll"></th>
+                            <th width="70px">Hình ảnh</th>
                             <th>Mã</th>
                             <th>Tên danh mục</th>
-                            <th>Thao tác</th>
+                            <th width="150px">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
+
                         <?php listCate($data); ?>
                     </tbody>
                 </table>

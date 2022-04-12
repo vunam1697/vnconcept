@@ -12,7 +12,7 @@ class CategoryController extends Controller
     {
         return [
             'name' => "required",
-            'code' => "required",
+            // 'code' => "required",
         ];
     }
 
@@ -20,7 +20,7 @@ class CategoryController extends Controller
     {
         return [
             'name.required' => 'Tên danh mục không được bỏ trống.',
-            'code.required' => 'Mã danh mục không được bỏ trống.',
+            // 'code.required' => 'Mã danh mục không được bỏ trống.',
         ];
     }
 
@@ -50,8 +50,49 @@ class CategoryController extends Controller
     public function index()
     {
         $data['module'] = $this->module();
-        $data['data'] = Categories::all();
+        $data['data'] = Categories::where('type', 'product_category')->get();
+
         return view("backend.{$this->module()['module']}.list", $data);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $data['module'] = $this->module();
+        $data['categories'] = Categories::where('type', 'product_category')->get();
+        return view("backend.{$this->module()['module']}.create-edit", $data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, $this->fields(), $this->messages());
+
+        $post_check_sulg = Categories::where('slug', $request->slug)->where('type', 'product_category')->first();
+        if (!empty($post_check_sulg)) {
+            return redirect()->back()->withInput()->withErrors(['Đường đẫn tĩnh này đã tồn tại.']);
+        }
+
+        $input = $request->all();
+
+        $input['categoryId'] = generateRandomCodeOTP();
+
+        $input['type'] = 'product_category';
+
+        Categories::create($input);
+
+        flash('Thêm mới thành công.')->success();
+
+        return redirect()->route("{$this->module()['module']}.index");
     }
 
     /**
@@ -84,6 +125,12 @@ class CategoryController extends Controller
         $this->validate($request, $this->fields(), $this->messages());
 
         $input = $request->all();
+
+        $input['slug'] = str_slug($request->name);
+
+        $input['type'] = 'product_category';
+
+        $input['showHome'] = $request->showHome == 1 ? 1 : NULL;
 
         Categories::findOrFail($id)->update($input);
 
@@ -160,6 +207,8 @@ class CategoryController extends Controller
                         'privateId' => $item->privateId ? $item->privateId : null,
                         'image' => $item->image ? $item->image : null,
                         'content' => $item->content ? $item->content : null,
+                        'type' => 'product_category',
+                        'slug' => str_slug($item->name),
                     ]);
                     // childs
                     if (count($item->childs)) {
@@ -175,6 +224,8 @@ class CategoryController extends Controller
                                 'privateId' => $value->privateId ? $value->privateId : null,
                                 'image' => $value->image ? $value->image : null,
                                 'content' => $value->content ? $value->content : null,
+                                'type' => 'product_category',
+                                'slug' => str_slug($value->name),
                             ]);
                         }
                     }
@@ -190,6 +241,8 @@ class CategoryController extends Controller
                         'privateId' => $item->privateId ? $item->privateId : null,
                         'image' => $item->image ? $item->image : null,
                         'content' => $item->content ? $item->content : null,
+                        'type' => 'product_category',
+                        'slug' => str_slug($item->name),
                     ]);
                     // childs
                     if (count($item->childs)) {
@@ -205,6 +258,8 @@ class CategoryController extends Controller
                                 'privateId' => $value->privateId ? $value->privateId : null,
                                 'image' => $value->image ? $value->image : null,
                                 'content' => $value->content ? $value->content : null,
+                                'type' => 'product_category',
+                                'slug' => str_slug($value->name),
                             ]);
                         }
                     }

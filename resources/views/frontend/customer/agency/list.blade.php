@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="header__admin-control flex items-center gap-3 ml-auto">
+                    <!-- <div class="header__admin-control flex items-center gap-3 ml-auto">
                         <p class="text=[#212529] text-sm font-semibold">
                             Doanh số đến thời điểm
                         </p>
@@ -82,67 +82,67 @@
                         <button class="menuAdmin w-6 h-6 bg-white flex justify-center items-center rounded ml-4">
                             &equiv;
                         </button>
-                    </div>
+                    </div> -->
 
                 </header>
 
-                <div class="agency_load">
-                    <div class="admin__main-body px-5 py-3">
-                        <div class="overflow-auto">
-                            <table class="table w-full text-sm text-left min-w-[900px]">
-                                <thead>
-                                    <tr>
-                                        <th class="w-[52px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            STT
-                                        </th>
-                                        <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Tên đại lý
-                                        </th>
-                                        <th class="w-[108px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Số điện thoại
-                                        </th>
-                                        <th class="w-[103px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Email
-                                        </th>
-                                        <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Địa chỉ
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $offset = ($agency->currentPage() - 1) * $agency->perPage();
-                                    @endphp
-                                    @foreach ($agency as $item)
-                                    <tr>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ ++$offset }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ $item->name }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ $item->phone }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ $item->email }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ $item->address }}
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
+                
+                <div class="admin__main-body px-5 py-3">
+                    <div class="overflow-auto">
+                        <table class="table w-full text-sm text-left min-w-[900px]">
+                            <thead>
+                                <tr>
+                                    <th class="w-[52px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        STT
+                                    </th>
+                                    <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Tên đại lý
+                                    </th>
+                                    <th class="w-[108px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Số điện thoại
+                                    </th>
+                                    <th class="w-[103px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Email
+                                    </th>
+                                    <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Địa chỉ
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $offset = ($agency->currentPage() - 1) * $agency->perPage();
+                                @endphp
+                                @foreach ($agency as $item)
+                                <tr>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ ++$offset }}
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ $item->name }}
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ $item->phone }}
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ $item->email }}
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ $item->address }}
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <!-- Phân trang -->
-                    <div class="text-[#212529] flex items-center justify-end gap-x-8 mt-auto px-5 py-3">
-                        @includeif('frontend.customer.components.pagination', [
-                            'pagination'  => $pagination,
-                            'data'   => $agency->toArray(),
-                        ])
+
+                </div>
+                <!-- Phân trang -->
+                <div class="text-[#212529] flex items-center justify-end gap-x-8 mt-auto px-5 py-3">
+                    @includeif('frontend.customer.components.pagination', [
+                        'pagination'  => $pagination,
+                        'data'   => $agency->toArray(),
+                    ])
                 </div>
             </div>
         </div>

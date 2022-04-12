@@ -1,43 +1,75 @@
 @extends('frontend.master')
 @section('main')
-    <main id="main">
-        <section class="page__banner" @if(!empty($dataSeo->banner)) style="background-image:url('{{ @$dataSeo->banner }}')" @endif>
-            <div class="container">
-                <h1 class="title__global">
-                    Tin tức
-                </h1>
-                <ul class="breadcrumb">
-                    <li>
-                        <a href="{{ url('/') }}" title="Trang chủ">
-                            Trang chủ
+<div class="page__product flex flex-wrap items-start pt-[43px]">
+
+    <div class="page__product--content w-full">
+        <h1 class="text-[#212529] text-[32px]">
+            Từ khóa tìm kiếm: {{ $q }}
+        </h1>
+        <div class="banner__product my-6">
+        </div>
+        <div class="page__product--group  grid gap-4 grid-cols-3">
+        @foreach ($data as $item)
+            @include('frontend.components.product')
+        @endforeach
+        </div>
+
+        {{ $data->links('frontend.components.pagination') }}
+
+
+
+        <div class="rooms-same-type mt-10 border-t border-[#EEEEEE] mb-20 pt-10">
+            <h2 class="text-2xl  text-[#212529] font-semibold">
+                Ứng dụng trong bài trí phòng
+            </h2>
+            <div class="same-type mt-6">
+                <div class="same-slide">
+                    @foreach ($rooms as $item)
+                    <div class="item px-2">
+                        <a href="{{ route('home.single-rooms', ['slug' => $item->slug]) }}" class="same-box block" title="{{ $item->name }}">
+                            <div class="h-[392px] overflow-hidden">
+                                <img src="{{ $item->image }}" alt="sameType-1.png" class="w-full h-full object-cover hover:opacity-70 transition-all">
+                            </div>
+                            <h3 class="text-[#424242] text-sm mt-2">
+                                {{ $item->name }}
+                            </h3>
                         </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0)" title="Tìm kiếm từ khóa: {{ $q }}">
-                            Tìm kiếm từ khóa: {{ $q }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </section>
-        <section class="page__new">
-            <div class="container">
-                <div class="new__group">
-                    @foreach ($data as $item)
-                        @include('frontend.components.news')
+                    </div>
                     @endforeach
                 </div>
-
-                <ul class="addon__pagination">
-                {{ $data->links('frontend.components.pagination', ['q' => $q]) }}
-                </ul>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+</div>
 @stop
 
-@section('css')
-    <link rel="stylesheet" href="{{ __BASE_URL__ }}/css/pages/page__new.css" />
-    <link rel="stylesheet" href="{{ __BASE_URL__ }}/css/pages/page__banner.css" />
-    <link rel="stylesheet" href="{{ __BASE_URL__ }}/css/pages/cm__new.css" />
+@section('script')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            function album() {
+                $('.same-slide').slick({
+                    dots: false,
+                    arrow: true,
+                    infinite: true,
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    autoplay: true,
+                    responsive: [{
+                        breakpoint: 991.98,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 1
+                        }
+                    }, {
+                        breakpoint: 400.98,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }]
+                })
+            }
+            album()
+        })
+    </script>
 @endsection

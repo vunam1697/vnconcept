@@ -18,6 +18,9 @@
 			                <li class="">
 			                	<a href="#activity1" data-toggle="tab" aria-expanded="true">Thông tin liên hệ</a>
 							</li>
+                            <li class="">
+			                	<a href="#activity4" data-toggle="tab" aria-expanded="true">Cấu hình trang chủ</a>
+							</li>
 			               	<li class="">
 			               		<a href="#activity2" data-toggle="tab" aria-expanded="true">Mạng xã hội</a>
 							</li>
@@ -241,6 +244,33 @@
 			               			</div>
 			               		</div>
 			               	</div>
+
+                            <div class="tab-pane" id="activity4">
+                                <div class="row">
+                                    <div class="col-lg-2">
+				                        <div class="form-group">
+				                           <label>Banner</label>
+				                           <div class="image">
+				                               <div class="image__thumbnail">
+				                                   <img src="{{ !empty($content->banner_home) ? url('/').$content->banner_home :  __IMAGE_DEFAULT__ }}"  data-init="{{ __IMAGE_DEFAULT__ }}">
+				                                   <a href="javascript:void(0)" class="image__delete"
+				                                   onclick="urlFileDelete(this)">
+				                                    <i class="fa fa-times"></i></a>
+				                                   <input type="hidden" value="{{ @$content->banner_home }}" name="content[banner_home]"  />
+				                                   <div class="image__button" onclick="fileSelect(this)"><i class="fa fa-upload"></i> Upload</div>
+				                               </div>
+				                           </div>
+				                       </div>
+				                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+											<label for="">Tiêu đề banner</label>
+											<input type="text" class="form-control" name="content[title_banner_home]"
+											value="{{ @$content->title_banner_home }}">
+										</div>
+                                    </div>
+                                </div>
+                            </div>
 			            </div>
 			        </div>
                		<div class="row">

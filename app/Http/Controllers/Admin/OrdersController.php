@@ -41,10 +41,10 @@ class OrdersController extends Controller
                 	'title' => 'Ngày đặt',
                     'with' => '',
                 ],
-                'date_receive' => [
-                	'title' => 'Ngày nhận',
-                    'with' => '',
-                ],
+                // 'date_receive' => [
+                // 	'title' => 'Ngày nhận',
+                //     'with' => '',
+                // ],
                 'status' => [
                 	'title' => 'Trạng thái',
                     'with' => '',
@@ -76,7 +76,7 @@ class OrdersController extends Controller
                 }
                 return '-------';
             })->addColumn('type_pay', function ($data) {
-                if($data->type == 2){
+                if($data->type == 1){
                     return '<span class="badge label-success">Thanh toán khi nhận hàng</span>';
                 }else {
                 	return '<span class="badge label-success">Chuyển khoản ngân hàng</span>';

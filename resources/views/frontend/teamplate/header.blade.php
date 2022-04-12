@@ -1,7 +1,7 @@
 <header class="header bg-[#232323] relative" id="header">
     <div class="container__wrapper">
         <div class="header__container flex items-center flex-wrap">
-            <a href="index.html" title="vnconcept" class="logo flex items-center justify-center w-[127.65px]">
+            <a href="{{ url('/') }}" title="vnconcept" class="logo flex items-center justify-center w-[127.65px]">
                 <img src="{{ url($site_info->logo) }}" alt="logo" class="w-full object-contain flex">
             </a>
             <div class="menu__container">
@@ -16,426 +16,29 @@
                                     <div class="tab-container__wrapper flex items-start">
                                         <div class="flex-shrink-0 max-w-[286px] w-full border-r border-[#EEEEEE]">
                                             <ul class="control-list grid gap-y-2">
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base active" tab-show="#tab1">Sofas</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab2">Amchairs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab3">Chairs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab4">Beds</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab5">Tables</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab6">Lamps</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab7">Rugs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab8">Decor</li>
-
+                                                @foreach ($category as $key => $item)
+                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base {{ $key == 0 ? 'active' : '' }}" tab-show="#tab{{ $key + 1 }}">{{ $item->name }}</li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                         <div class="tab-content">
-                                            <div class="tab-item hidden active" id="tab1">
+                                        @foreach ($category as $key => $item)
+                                            <div class="tab-item hidden {{ $key == 0 ? 'active' : '' }}" id="tab{{ $key + 1 }}">
                                                 <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
+                                                    @if (count($item->get_child_cate()))
                                                     <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
                                                         <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
+                                                            @foreach ($item->get_child_cate() as $value)
+                                                            <a href="{{ route('home.category-product', ['slug' => $value->slug]) }}" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="{{ $value->name }}">
+                                                                {{ $value->name }}
                                                             </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
+                                                            @endforeach
                                                         </div>
                                                     </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                    @endif
                                                 </div>
                                             </div>
-                                            <div class="tab-item hidden" id="tab2">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab3">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab4">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab5">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab6">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab7">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab8">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -443,98 +46,30 @@
 
                         </div>
                         <ul class="menu__mobile">
+                        @foreach ($category as $key => $item)
                             <li>
-                                <a href="#" title="Sofas" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Sofas
+                                <a href="{{ route('home.category-product', ['slug' => $item->slug]) }}" title="{{ $item->name }}" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
+                                    {{ $item->name }}
                                 </a>
+                                @if (count($item->get_child_cate()))
                                 <ul class="hidden">
                                     <li>
-                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                            By Style
-                                        </h3>
                                         <div class="gap gap-y-3">
-                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                Sofas
+                                            @foreach ($item->get_child_cate() as $value)
+                                            <a href="{{ route('home.category-product', ['slug' => $value->slug]) }}" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="{{ $value->name }}">
+                                                {{ $value->name }}
                                             </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                Real leather Sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                Simily leather Sofas
-                                            </a>
-
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                Felt Sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                Office Sofas
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                            By Size
-                                        </h3>
-                                        <div class="gap gap-y-3">
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                1 seater sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                2 seater sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                3 seater sofas
-                                            </a>
-
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                Corner sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                Set sofas
-                                            </a>
+                                            @endforeach
                                         </div>
                                     </li>
                                 </ul>
+                                @endif
                             </li>
-                            <li>
-                                <a href="#" title="Amchairs " class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Amchairs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Chairs" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Chairs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Beds" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Beds
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Tables" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Tables
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Lamps" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Lamps
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Rugs" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Rugs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Decor" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Decor
-                                </a>
-                            </li>
+                        @endforeach
                         </ul>
                     </li>
                     <li class=" ">
-                        <a href="rooms.page.html" title="ROOMS" class="menu__link flex text-white text-transparent-unp uppercase text-base px-4 pt-[26px] pb-[22px]">
+                        <a href="{{ route('home.rooms') }}" title="ROOMS" class="menu__link flex text-white text-transparent-unp uppercase text-base px-4 pt-[26px] pb-[22px]">
                             ROOMS
                         </a>
                         <div class="menu__omega absolute opacity-0 translate-y-5 left-0 right-0 top-full bg-white z-50 w-full shadow-[0px_8px_15px_rgba(0,0,0,0.15)] pt-6 pb-12">
@@ -543,426 +78,29 @@
                                     <div class="tab-container__wrapper flex items-start">
                                         <div class="flex-shrink-0 max-w-[286px] w-full border-r border-[#EEEEEE]">
                                             <ul class="control-list grid gap-y-2">
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base active" tab-show="#tab1">Sofas</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab2">Amchairs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab3">Chairs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab4">Beds</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab5">Tables</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab6">Lamps</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab7">Rugs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab8">Decor</li>
-
+                                                @foreach ($category_rooms as $key => $item)
+                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base {{ $key == 0 ? 'active' : '' }}" tab-show="#tab{{ $key +1 }}">{{ $item->name }}</li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                         <div class="tab-content">
+                                        @foreach ($category_rooms as $key => $item)
                                             <div class="tab-item hidden active" id="tab1">
                                                 <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
+                                                @if (count($item->get_child()))
                                                     <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
                                                         <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
+                                                        @foreach ($item->get_child() as $value)
+                                                            <a href="" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="{{ $value->name }}">
+                                                                {{ $value->name }}
                                                             </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
+                                                        @endforeach
                                                         </div>
                                                     </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                @endif
                                                 </div>
                                             </div>
-                                            <div class="tab-item hidden" id="tab2">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab3">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab4">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab5">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab6">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab7">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab8">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -970,98 +108,30 @@
 
                         </div>
                         <ul class="menu__mobile">
+                            @foreach ($category_rooms as $key => $item)
                             <li>
-                                <a href="#" title="Sofas" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Sofas
+                                <a href="#" title="{{ $item->name }}" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
+                                    {{ $item->name }}
                                 </a>
+                                @if (count($item->get_child()))
                                 <ul class="hidden">
                                     <li>
-                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                            By Style
-                                        </h3>
                                         <div class="gap gap-y-3">
-                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                Sofas
+                                        @foreach ($item->get_child() as $value)
+                                            <a href="" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="{{ $value->name }}">
+                                                {{ $value->name }}
                                             </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                Real leather Sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                Simily leather Sofas
-                                            </a>
-
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                Felt Sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                Office Sofas
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                            By Size
-                                        </h3>
-                                        <div class="gap gap-y-3">
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                1 seater sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                2 seater sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                3 seater sofas
-                                            </a>
-
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                Corner sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                Set sofas
-                                            </a>
+                                        @endforeach
                                         </div>
                                     </li>
                                 </ul>
+                                @endif
                             </li>
-                            <li>
-                                <a href="#" title="Amchairs " class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Amchairs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Chairs" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Chairs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Beds" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Beds
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Tables" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Tables
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Lamps" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Lamps
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Rugs" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Rugs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Decor" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Decor
-                                </a>
-                            </li>
+                            @endforeach
                         </ul>
                     </li>
                     <li class=" ">
-                        <a href="collections.page.html" title="COLLECTIONS" class="menu__link flex text-white text-transparent-unp uppercase text-base px-4 pt-[26px] pb-[22px]">
+                        <a href="{{ route('home.collection') }}" title="COLLECTIONS" class="menu__link flex text-white text-transparent-unp uppercase text-base px-4 pt-[26px] pb-[22px]">
                             COLLECTIONS
                         </a>
                         <div class="menu__omega absolute opacity-0 translate-y-5 left-0 right-0 top-full bg-white z-50 w-full shadow-[0px_8px_15px_rgba(0,0,0,0.15)] pt-6 pb-12">
@@ -1070,426 +140,29 @@
                                     <div class="tab-container__wrapper flex items-start">
                                         <div class="flex-shrink-0 max-w-[286px] w-full border-r border-[#EEEEEE]">
                                             <ul class="control-list grid gap-y-2">
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base active" tab-show="#tab1">Sofas</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab2">Amchairs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab3">Chairs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab4">Beds</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab5">Tables</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab6">Lamps</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab7">Rugs</li>
-                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base" tab-show="#tab8">Decor</li>
-
+                                                @foreach ($category_collection as $key => $item)
+                                                <li class="control-list__item cursor-pointer flex items-center  px-4 py-[10px]  text-[#232323] text-base {{ $key == 0 ? 'active' : '' }}" tab-show="#tab{{ $key +1 }}">{{ $item->name }}</li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                         <div class="tab-content">
+                                        @foreach ($category_collection as $key => $item)
                                             <div class="tab-item hidden active" id="tab1">
                                                 <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
+                                                @if (count($item->get_child()))
                                                     <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
                                                         <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
+                                                        @foreach ($item->get_child() as $value)
+                                                            <a href="" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="{{ $value->name }}">
+                                                                {{ $value->name }}
                                                             </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
+                                                        @endforeach
                                                         </div>
                                                     </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                @endif
                                                 </div>
                                             </div>
-                                            <div class="tab-item hidden" id="tab2">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab3">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab4">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab5">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab6">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab7">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-item hidden" id="tab8">
-                                                <div class="table-item__grid grid grid-cols-3 gap-y-8 gap-x-[114px] ml-[130px]">
-
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Style
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                                Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                                Real leather Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                                Simily leather Sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                                Felt Sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                                Office Sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="min-w-[183px]">
-                                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                                            By Size
-                                                        </h3>
-                                                        <div class="gap gap-y-3">
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                                1 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                                2 seater sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                                3 seater sofas
-                                                            </a>
-
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                                Corner sofas
-                                                            </a>
-                                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                                Set sofas
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -1497,100 +170,32 @@
 
                         </div>
                         <ul class="menu__mobile">
+                            @foreach ($category_collection as $key => $item)
                             <li>
-                                <a href="#" title="Sofas" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Sofas
+                                <a href="#" title="{{ $item->name }}" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
+                                    {{ $item->name }}
                                 </a>
+                                @if (count($item->get_child()))
                                 <ul class="hidden">
                                     <li>
-                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                            By Style
-                                        </h3>
                                         <div class="gap gap-y-3">
-                                            <a href="#" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="Sofas">
-                                                Sofas
+                                        @foreach ($item->get_child() as $value)
+                                            <a href="" class="flex hover:opacity-80 w-full items-center text-[#424242] text-base py-1" title="{{ $value->name }}">
+                                                {{ $value->name }}
                                             </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="Real leather Sofas">
-                                                Real leather Sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Simily leather Sofas">
-                                                Simily leather Sofas
-                                            </a>
-
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Felt Sofas">
-                                                Felt Sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Office Sofas">
-                                                Office Sofas
-                                            </a>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <h3 class="text-[#BFBFBF] font-semibold text-sm mb-4">
-                                            By Size
-                                        </h3>
-                                        <div class="gap gap-y-3">
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="1 seater sofas">
-                                                1 seater sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base px-1" title="2 seater sofas">
-                                                2 seater sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="3 seater sofas">
-                                                3 seater sofas
-                                            </a>
-
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Corner sofas">
-                                                Corner sofas
-                                            </a>
-                                            <a href="#" class="flex w-full hover:opacity-80 items-center text-[#424242] text-base py-1" title="Set sofas">
-                                                Set sofas
-                                            </a>
+                                        @endforeach
                                         </div>
                                     </li>
                                 </ul>
+                                @endif
                             </li>
-                            <li>
-                                <a href="#" title="Amchairs " class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Amchairs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Chairs" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Chairs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Beds" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Beds
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Tables" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Tables
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Lamps" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Lamps
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Rugs" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Rugs
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" title="Decor" class="cursor-pointer flex items-center  px-7 py-[10px]  text-[#232323] text-base">
-                                    Decor
-                                </a>
-                            </li>
+                            @endforeach
                         </ul>
                     </li>
                 </ul>
             </div>
-            <form class="flex items-center border-b border-white pr-3 w-full max-w-[298px] ml-auto add__search">
-                <input type="text" placeholder="Tìm kiếm" class="add__search--input w-full border-0 h-7 bg-transparent text-white text-base placeholder:text-white  outline-none">
+            <form action="{{ route('home.search') }}" method="GET" class="flex items-center border-b border-white pr-3 w-full max-w-[298px] ml-auto add__search">
+                <input type="text" placeholder="Tìm kiếm" name="q" value="{{ request()->get('q') }}" class="add__search--input w-full border-0 h-7 bg-transparent text-white text-base placeholder:text-white  outline-none">
                 <button class="w-6 h-6 flex-shrink-0">
                     <img src="{{ url('/uploads/images/icons/icon__search.svg') }}" alt="icon__search.svg" class="flex w-5 object-contain">
                 </button>
@@ -1600,10 +205,10 @@
                 <a href="#" title="heart" class="w-6 h-6 flex justify-center items-center">
                     <img src="{{ url('/uploads/images/icons/icon__heart.svg') }}" alt="icon__heart.svg" class="flex w-5" title="favorite product">
                 </a>
-                <a href="card.page.html" class="w-6 h-6 flex justify-center items-center" title="giỏ hàng">
+                <a href="{{ route('home.cart') }}" class="w-6 h-6 flex justify-center items-center" title="giỏ hàng">
                     <img src="{{ url('/uploads/images/icons/icon__cart.svg') }}" alt="icon__cart.svg" class="flex w-5">
                 </a>
-                <a href="#" title="heart" class="w-6 h-6 flex justify-center items-center text-white uppercase" title="language">
+                <a href="javascript:void(0)" title="heart" class="w-6 h-6 flex justify-center items-center text-white uppercase" title="language">
                     VN
                 </a>
                 <a href="{{ route('home.login') }}" title="Đăng nhập" class="w-6 h-6 flex justify-center items-center text-white uppercase" title="language">

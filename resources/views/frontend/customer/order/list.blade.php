@@ -64,7 +64,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="header__admin-control flex items-center gap-3 ml-auto">
+                    <!-- <div class="header__admin-control flex items-center gap-3 ml-auto">
                         <p class="text=[#212529] text-sm font-semibold">
                             Doanh số đến thời điểm
                         </p>
@@ -82,95 +82,96 @@
                         <button class="menuAdmin w-6 h-6 bg-white flex justify-center items-center rounded ml-4">
                             &equiv;
                         </button>
-                    </div>
+                    </div> -->
 
                 </header>
 
-                <div class="agency_load">
-                    <div class="admin__main-body px-5 py-3">
-                        <div class="overflow-auto">
-                            <table class="table w-full text-sm text-left min-w-[900px]">
-                                <thead>
-                                    <tr>
-                                        <th class="w-[52px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            STT
-                                        </th>
-                                        <th class="w-[113px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Mã đơn
-                                        </th>
-                                        <th class="w-[108px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Tình trạng
-                                        </th>
-                                        <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Người nhận
-                                        </th>
-                                        <th class="w-[306px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Địa chỉ giao hàng
-                                        </th>
-                                        <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            SĐT người nhận
-                                        </th>
-                                        <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            Ngày giao
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $offset = ($order->currentPage() - 1) * $order->perPage();
-                                    @endphp
-                                    @foreach ($order as $item)
-                                    <tr>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ ++$offset }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                <div class="admin__main-body px-5 py-3">
+                    <div class="overflow-auto">
+                        <table class="table w-full text-sm text-left min-w-[900px]">
+                            <thead>
+                                <tr>
+                                    <th class="w-[52px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        STT
+                                    </th>
+                                    <th class="w-[113px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Mã đơn
+                                    </th>
+                                    <th class="w-[108px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Tình trạng
+                                    </th>
+                                    <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Người nhận
+                                    </th>
+                                    <th class="w-[306px] border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Địa chỉ giao hàng
+                                    </th>
+                                    <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        SĐT người nhận
+                                    </th>
+                                    <th class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        Ngày đặt
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $offset = ($order->currentPage() - 1) * $order->perPage();
+                                @endphp
+                                @foreach ($order as $item)
+                                <tr>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ ++$offset }}
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        <a href="{{ route('admin.detail-orders', ['id' => $item->id]) }}">
                                             {{ $item->code }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            @if ($item->status == 1)
-                                            <span class="bg-[#FFDE67] text-sm text-p#212529] p-1 flex justify-center items-center rounded">
-                                                Chờ giao
-                                            </span>
-                                            @elseif ($item->status == 2)
-                                            <span class="bg-[#A3C6FF] text-sm text-p#212529] p-1 flex justify-center items-center rounded">
-                                                Đang giao
-                                            </span>
-                                            @elseif ($item->status == 3)
-                                            <span class="bg-[#73FF81] text-sm text-p#212529] p-1 flex justify-center items-center rounded">
-                                                Đã giao
-                                            </span>
-                                            @else
-                                            <span class="bg-[#FFA6A6] text-sm text-p#212529] p-1 flex justify-center items-center rounded">
-                                                Đã hủy
-                                            </span>
-                                            @endif
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ $item->name }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ $item->address }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ $item->phone }}
-                                        </td>
-                                        <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
-                                            {{ $item->updated_at->format('d/m/YY') }}
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
+                                        </a>
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        @if ($item->status == 1)
+                                        <span class="bg-[#FFDE67] text-sm text-p#212529] p-1 flex justify-center items-center rounded">
+                                            Chờ giao
+                                        </span>
+                                        @elseif ($item->status == 2)
+                                        <span class="bg-[#A3C6FF] text-sm text-p#212529] p-1 flex justify-center items-center rounded">
+                                            Đang giao
+                                        </span>
+                                        @elseif ($item->status == 3)
+                                        <span class="bg-[#73FF81] text-sm text-p#212529] p-1 flex justify-center items-center rounded">
+                                            Đã giao
+                                        </span>
+                                        @else
+                                        <span class="bg-[#FFA6A6] text-sm text-p#212529] p-1 flex justify-center items-center rounded">
+                                            Đã hủy
+                                        </span>
+                                        @endif
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ $item->name }}
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ $item->address }}
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ $item->phone }}
+                                    </td>
+                                    <td class="border-[0.5px] px-2 py-[10px] border-[#D2D2D2]">
+                                        {{ $item->created_at->format('d/m/Y') }}
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                    <!-- Phân trang -->
-                    <div class="text-[#212529] flex items-center justify-end gap-x-8 mt-auto px-5 py-3">
-                        @includeif('frontend.customer.components.pagination', [
-                            'pagination'  => $pagination,
-                            'data'   => $order->toArray(),
-                        ])
+
+                </div>
+                <!-- Phân trang -->
+                <div class="text-[#212529] flex items-center justify-end gap-x-8 mt-auto px-5 py-3">
+                    @includeif('frontend.customer.components.pagination', [
+                        'pagination'  => $pagination,
+                        'data'   => $order->toArray(),
+                    ])
                 </div>
             </div>
         </div>

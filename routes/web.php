@@ -13,9 +13,41 @@
 // Website
 Route::get('/', 'IndexController@getHome')->name('home.index');
 
+Route::get('/tim-kiem', 'IndexController@getSearch')->name('home.search');
+
 Route::get('/san-pham', 'IndexController@getListProduct')->name('home.products');
 
 Route::get('/san-pham/{slug}', 'IndexController@getSingleProduct')->name('home.single-products');
+
+Route::get('/danh-muc-san-pham/{slug}', 'IndexController@getCategoryProduct')->name('home.category-product');
+
+Route::post('/filter-products', 'IndexController@getFilterProductsAjax')->name('home.filterProducts');
+
+Route::get('/rooms', 'IndexController@getRooms')->name('home.rooms');
+
+Route::get('/rooms/{slug}', 'IndexController@getSingleRooms')->name('home.single-rooms');
+
+Route::get('/load-more-ajax', 'IndexController@getLoadMoreAjax')->name('home.load-more-ajax');
+
+Route::get('/collection', 'IndexController@getCollection')->name('home.collection');
+
+Route::get('/collection/{slug}', 'IndexController@getSingleCollection')->name('home.single-collection');
+
+// Giỏ hàng
+
+Route::post('add-cart', 'IndexController@postAddCart')->name('home.post-add-cart');
+
+Route::post('add-cart-more', 'IndexController@postAddCartMore')->name('home.post-add-cart-more');
+
+Route::get('gio-hang', 'IndexController@getCart')->name('home.cart');
+
+Route::get('update-cart', 'IndexController@getUpdateCart')->name('home.update.cart');
+
+Route::get('remove/{rowID}', 'IndexController@getRemoveCart')->name('home.remove.cart');
+
+Route::get('check-cart', 'IndexController@getCheckCart')->name('home.check-cart');
+
+Route::post('check-out', 'IndexController@postCheckOut')->name('home.check-out.post');
 
 // Đăng nhập website
 Route::get('/login', 'LoginController@login')->name('home.login');
@@ -46,11 +78,15 @@ Route::group(['middleware' => 'customer_auth'], function () {
 
     Route::get('/total-revenue/{key}', 'AdminController@getTotalRevenue')->name('admin.total-revenue');
 
+    Route::post('/tim-kiem', 'AdminController@searchAll')->name('admin.search-all');
+
     // Quản lý đại lý
 
     Route::get('/dai-ly', 'AdminController@getListAgency')->name('admin.agency');
 
     Route::get('/don-hang', 'AdminController@getListOrder')->name('admin.orders');
+
+    Route::get('/don-hang/{id}', 'AdminController@getDetailOrder')->name('admin.detail-orders');
 
     // Quản lý tài khoản
 
@@ -95,6 +131,46 @@ Route::group(['namespace' => 'Admin'], function () {
         Route::resource('category', 'CategoryController', ['except' => ['show']]);
 
         Route::get('category/sync-data', ['as' => 'category.sync-data', 'uses' => 'CategoryController@syncData']);
+
+        // Quản lý đơn hàng
+        Route::resource('orders', 'OrdersController', ['except' => ['show']]);
+
+        // Route::resource('category-filter', 'AttributesController', ['except' => ['show']]);
+        Route::get('category-filter', 'AttributesController@getListCategory')->name('list-category-filter');
+
+        Route::get('filter', 'AttributesController@index')->name('filter.index');
+
+        Route::post('filter/store', 'AttributesController@store')->name('filter.store');
+
+        Route::get('filter/edit/{id}', 'AttributesController@edit')->name('filter.edit');
+
+        Route::post('filter/update/{id}', 'AttributesController@update')->name('filter.update');
+
+        Route::post('filter/destroy', 'AttributesController@destroy')->name('filter.destroy');
+
+        // Thuộc tính sản phẩm
+        // Route::group(['prefix' => 'product-attributes'], function() {
+        //     Route::get('/', 'ProductAttributeTypesController@getList')->name('product-attributes.index');
+        //     Route::post('/store', 'ProductAttributeTypesController@postStore')->name('product-attributes.store');
+        //     Route::get('/{id}/edit', 'ProductAttributeTypesController@getEdit')->name('product-attributes.edit');
+        //     Route::post('/{id}/edit', 'ProductAttributeTypesController@postEdit')->name('product-attributes.post.edit');
+        //     Route::delete('/{id}/delete', 'ProductAttributeTypesController@delete')->name('product-attributes.destroy');
+        // });
+
+        // Rooms
+        Route::resource('category-rooms', 'CategoryRoomsController', ['except' => ['show']]);
+
+        Route::resource('rooms', 'RoomsController', ['except' => ['show']]);
+
+        Route::post('rooms/postMultiDel', ['as' => 'rooms.postMultiDel', 'uses' => 'RoomsController@deleteMuti']);
+
+        // Collection
+        Route::resource('category-collection', 'CategoryCollectionController', ['except' => ['show']]);
+
+        Route::resource('collection', 'CollectionController', ['except' => ['show']]);
+
+        Route::post('collection/postMultiDel', ['as' => 'collection.postMultiDel', 'uses' => 'CollectionController@deleteMuti']);
+
 
         // Tài khoản thành viên
         Route::resource('member', 'MemberController', ['except' => ['show']]);

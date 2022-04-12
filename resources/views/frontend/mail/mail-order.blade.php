@@ -68,12 +68,10 @@
 					</tbody>
 				</table>
 			</div>
-			<a href="{{ @$url }}">Chi tiết</a>
 
 		</div>
 	</div>
 	<br/>
 	<br>
-	<i style="font-size: 9px;">FROM GCO - TEAM</i>
 </body>
 </html>

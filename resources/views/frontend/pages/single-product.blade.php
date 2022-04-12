@@ -3,27 +3,26 @@
     <div class="page__detail pt-7 pb-8">
         <ul class="text-[#868E96] flex items-center text-sm gap-[13px] breadcrumb">
             <li>
-                <a href="product.page.html" title="Sản phẩm">Sản phẩm</a>
+                <a href="{{ route('home.products') }}" title="Sản phẩm">Sản phẩm</a>
             </li>
+            @if (!empty($data->category->name))
             <li>
-                <a href="product.page.html" title="Sofa da thật">Sofa da thật</a>
+                <a href="{{ route('home.category-product', ['slug' => $data->category->slug]) }}" title="{{ @$data->category->name }}">{{ @$data->category->name }}</a>
             </li>
+            @endif
             <li>
-                <a href="product.page.html" title="Sofa đôi" class="text-[#232323]">Sofa đôi</a>
+                <a href="javascript:void(0)" title="{{ $data->name }}" class="text-[#232323]">{{ $data->name }}</a>
             </li>
         </ul>
 
         <div class="detail__slide max-w-[1010px] w-full mt-12 mx-auto">
             <div class="slide__product">
                 <div class="slide__item">
-                    <img src="images/sofa-import-1.png" class="max-w-full w-full object-contain block mx-auto" alt="">
-                </div>
-                <div class="slide__item">
-                    <img src="images/sofa-import-2.png" class="max-w-full w-full object-contain block mx-auto" alt="">
+                    <img src="{{ $data->image }}" class="max-w-full w-full object-contain block mx-auto" alt="{{ $data->name }}">
                 </div>
             </div>
         </div>
-        <h2 class="text-lg font-bold mt-12 mb-5">
+        <!-- <h2 class="text-lg font-bold mt-12 mb-5">
             Màu sắc sản phẩm
         </h2>
         <div class="check__group grid gap-x-8 gap-y-4 grid-cols-5 items-start">
@@ -79,11 +78,11 @@
                     2
                 </span>
             </div>
-        </div>
+        </div> -->
         <div class="detail__group mt-8 flex items-start flex-wrap border-t border-[#EEEEEE] pt-12">
             <div class="detail__content max-w-[calc(100%_-_389px)] w-full pr-[119px]">
                 <h1 class="text-[#212529] font-bold text-[32px]">
-                    Sofa Moderna 2 seater
+                    {{ $data->name }}
                 </h1>
                 <div class="grid grid-cols-1 gap-10">
                     <div class="group pt-10">
@@ -99,9 +98,7 @@
                             </span>
                         </div>
                         <div class="group__body pt-6 text-[#868E96] text-sm text-justify">
-                            <p>
-                                MThe modern Carmo sofa is a real show-stopper with its cubic look, perfectly accentuated by exclusive piping details. Don’t be fooled by the straight lines, this sofa is a dream to sit on. Cosy up with your family or claim the sofa all to yourself with this roomy 3 seater sofa.
-                            </p>
+                            {!! $data->content !!}
                         </div>
                     </div>
                     <div class="group pt-10">
@@ -116,8 +113,11 @@
 
                             </span>
                         </div>
+                        <?php $detailProduct = json_decode(@$data->detailProduct) ?>
+                        @if (!empty($detailProduct))
                         <div class="group__body pt-6 text-[#212529] text-base">
                             <div class="group__body--item grid gap-y-5 gap-x-[117px] grid-cols-2 items-start mb-6">
+                                @foreach ($detailProduct as $item)
                                 <div class="flex items-center gap-x-4">
                                     <span class="w-[22px] h-[22px] flex items-center flex-shrink-0">
                                         <svg width="19" height="15" viewbox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -125,89 +125,22 @@
                                         </svg>
                                     </span>
                                     <span>
-                                        Chiều cao: 70 cm
+                                        {{ $item->name }}: {{ $item->content }}
                                     </span>
                                 </div>
-                                <div class="flex items-center gap-x-4">
-                                    <span class="w-[22px] h-[22px] flex items-center flex-shrink-0">
-                                        <svg width="19" height="15" viewbox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.95312 14.375C10.4766 14.375 10.7578 14.1016 10.7578 13.5781V1.14844C10.7578 0.625 10.4766 0.351562 9.95312 0.351562C9.42969 0.351562 9.14844 0.625 9.14844 1.14844V13.5781C9.14844 14.1016 9.42969 14.375 9.95312 14.375ZM1.79688 11.2656C2.32031 11.2656 2.59375 10.9922 2.59375 10.4688V4.25781C2.59375 3.73438 2.32031 3.46094 1.79688 3.46094C1.26562 3.46094 0.992188 3.73438 0.992188 4.25781V10.4688C0.992188 10.9922 1.26562 11.2656 1.79688 11.2656ZM18.1094 11.2656C18.6406 11.2656 18.9141 10.9922 18.9141 10.4688V4.25781C18.9141 3.73438 18.6406 3.46094 18.1094 3.46094C17.5859 3.46094 17.3125 3.73438 17.3125 4.25781V10.4688C17.3125 10.9922 17.5859 11.2656 18.1094 11.2656ZM5.875 9.29688C6.39844 9.29688 6.67188 9.02344 6.67188 8.49219V6.23438C6.67188 5.70312 6.39844 5.42969 5.875 5.42969C5.35156 5.42969 5.07812 5.70312 5.07812 6.23438V8.49219C5.07812 9.02344 5.35156 9.29688 5.875 9.29688ZM14.0312 9.29688C14.5547 9.29688 14.8281 9.02344 14.8281 8.49219V6.23438C14.8281 5.70312 14.5547 5.42969 14.0312 5.42969C13.5078 5.42969 13.2344 5.70312 13.2344 6.23438V8.49219C13.2344 9.02344 13.5078 9.29688 14.0312 9.29688Z" fill="#232323" />
-                                        </svg>
-                                    </span>
-                                    <span>
-                                        Chiều sâu: 93 cm
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <span class="w-[22px] h-[22px] flex items-center flex-shrink-0">
-                                        <svg width="19" height="15" viewbox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.95312 14.375C10.4766 14.375 10.7578 14.1016 10.7578 13.5781V1.14844C10.7578 0.625 10.4766 0.351562 9.95312 0.351562C9.42969 0.351562 9.14844 0.625 9.14844 1.14844V13.5781C9.14844 14.1016 9.42969 14.375 9.95312 14.375ZM1.79688 11.2656C2.32031 11.2656 2.59375 10.9922 2.59375 10.4688V4.25781C2.59375 3.73438 2.32031 3.46094 1.79688 3.46094C1.26562 3.46094 0.992188 3.73438 0.992188 4.25781V10.4688C0.992188 10.9922 1.26562 11.2656 1.79688 11.2656ZM18.1094 11.2656C18.6406 11.2656 18.9141 10.9922 18.9141 10.4688V4.25781C18.9141 3.73438 18.6406 3.46094 18.1094 3.46094C17.5859 3.46094 17.3125 3.73438 17.3125 4.25781V10.4688C17.3125 10.9922 17.5859 11.2656 18.1094 11.2656ZM5.875 9.29688C6.39844 9.29688 6.67188 9.02344 6.67188 8.49219V6.23438C6.67188 5.70312 6.39844 5.42969 5.875 5.42969C5.35156 5.42969 5.07812 5.70312 5.07812 6.23438V8.49219C5.07812 9.02344 5.35156 9.29688 5.875 9.29688ZM14.0312 9.29688C14.5547 9.29688 14.8281 9.02344 14.8281 8.49219V6.23438C14.8281 5.70312 14.5547 5.42969 14.0312 5.42969C13.5078 5.42969 13.2344 5.70312 13.2344 6.23438V8.49219C13.2344 9.02344 13.5078 9.29688 14.0312 9.29688Z" fill="#232323" />
-                                        </svg>
-                                    </span>
-                                    <span>
-                                        Chiều rộng: 258 cm
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <span class="w-[22px] h-[22px] flex items-center flex-shrink-0">
-                                        <svg width="19" height="15" viewbox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.95312 14.375C10.4766 14.375 10.7578 14.1016 10.7578 13.5781V1.14844C10.7578 0.625 10.4766 0.351562 9.95312 0.351562C9.42969 0.351562 9.14844 0.625 9.14844 1.14844V13.5781C9.14844 14.1016 9.42969 14.375 9.95312 14.375ZM1.79688 11.2656C2.32031 11.2656 2.59375 10.9922 2.59375 10.4688V4.25781C2.59375 3.73438 2.32031 3.46094 1.79688 3.46094C1.26562 3.46094 0.992188 3.73438 0.992188 4.25781V10.4688C0.992188 10.9922 1.26562 11.2656 1.79688 11.2656ZM18.1094 11.2656C18.6406 11.2656 18.9141 10.9922 18.9141 10.4688V4.25781C18.9141 3.73438 18.6406 3.46094 18.1094 3.46094C17.5859 3.46094 17.3125 3.73438 17.3125 4.25781V10.4688C17.3125 10.9922 17.5859 11.2656 18.1094 11.2656ZM5.875 9.29688C6.39844 9.29688 6.67188 9.02344 6.67188 8.49219V6.23438C6.67188 5.70312 6.39844 5.42969 5.875 5.42969C5.35156 5.42969 5.07812 5.70312 5.07812 6.23438V8.49219C5.07812 9.02344 5.35156 9.29688 5.875 9.29688ZM14.0312 9.29688C14.5547 9.29688 14.8281 9.02344 14.8281 8.49219V6.23438C14.8281 5.70312 14.5547 5.42969 14.0312 5.42969C13.5078 5.42969 13.2344 5.70312 13.2344 6.23438V8.49219C13.2344 9.02344 13.5078 9.29688 14.0312 9.29688Z" fill="#232323" />
-                                        </svg>
-                                    </span>
-                                    <span>
-                                        Chiều cao chỗ ngồi: 70 cm
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <span class="w-[22px] h-[22px] flex items-center flex-shrink-0">
-                                        <svg width="19" height="15" viewbox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.95312 14.375C10.4766 14.375 10.7578 14.1016 10.7578 13.5781V1.14844C10.7578 0.625 10.4766 0.351562 9.95312 0.351562C9.42969 0.351562 9.14844 0.625 9.14844 1.14844V13.5781C9.14844 14.1016 9.42969 14.375 9.95312 14.375ZM1.79688 11.2656C2.32031 11.2656 2.59375 10.9922 2.59375 10.4688V4.25781C2.59375 3.73438 2.32031 3.46094 1.79688 3.46094C1.26562 3.46094 0.992188 3.73438 0.992188 4.25781V10.4688C0.992188 10.9922 1.26562 11.2656 1.79688 11.2656ZM18.1094 11.2656C18.6406 11.2656 18.9141 10.9922 18.9141 10.4688V4.25781C18.9141 3.73438 18.6406 3.46094 18.1094 3.46094C17.5859 3.46094 17.3125 3.73438 17.3125 4.25781V10.4688C17.3125 10.9922 17.5859 11.2656 18.1094 11.2656ZM5.875 9.29688C6.39844 9.29688 6.67188 9.02344 6.67188 8.49219V6.23438C6.67188 5.70312 6.39844 5.42969 5.875 5.42969C5.35156 5.42969 5.07812 5.70312 5.07812 6.23438V8.49219C5.07812 9.02344 5.35156 9.29688 5.875 9.29688ZM14.0312 9.29688C14.5547 9.29688 14.8281 9.02344 14.8281 8.49219V6.23438C14.8281 5.70312 14.5547 5.42969 14.0312 5.42969C13.5078 5.42969 13.2344 5.70312 13.2344 6.23438V8.49219C13.2344 9.02344 13.5078 9.29688 14.0312 9.29688Z" fill="#232323" />
-                                        </svg>
-                                    </span>
-                                    <span>
-                                        Chiều cao tay vịn: 70 cm
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <span class="w-[22px] h-[22px] flex items-center flex-shrink-0">
-                                        <svg width="19" height="15" viewbox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.95312 14.375C10.4766 14.375 10.7578 14.1016 10.7578 13.5781V1.14844C10.7578 0.625 10.4766 0.351562 9.95312 0.351562C9.42969 0.351562 9.14844 0.625 9.14844 1.14844V13.5781C9.14844 14.1016 9.42969 14.375 9.95312 14.375ZM1.79688 11.2656C2.32031 11.2656 2.59375 10.9922 2.59375 10.4688V4.25781C2.59375 3.73438 2.32031 3.46094 1.79688 3.46094C1.26562 3.46094 0.992188 3.73438 0.992188 4.25781V10.4688C0.992188 10.9922 1.26562 11.2656 1.79688 11.2656ZM18.1094 11.2656C18.6406 11.2656 18.9141 10.9922 18.9141 10.4688V4.25781C18.9141 3.73438 18.6406 3.46094 18.1094 3.46094C17.5859 3.46094 17.3125 3.73438 17.3125 4.25781V10.4688C17.3125 10.9922 17.5859 11.2656 18.1094 11.2656ZM5.875 9.29688C6.39844 9.29688 6.67188 9.02344 6.67188 8.49219V6.23438C6.67188 5.70312 6.39844 5.42969 5.875 5.42969C5.35156 5.42969 5.07812 5.70312 5.07812 6.23438V8.49219C5.07812 9.02344 5.35156 9.29688 5.875 9.29688ZM14.0312 9.29688C14.5547 9.29688 14.8281 9.02344 14.8281 8.49219V6.23438C14.8281 5.70312 14.5547 5.42969 14.0312 5.42969C13.5078 5.42969 13.2344 5.70312 13.2344 6.23438V8.49219C13.2344 9.02344 13.5078 9.29688 14.0312 9.29688Z" fill="#232323" />
-                                        </svg>
-                                    </span>
-                                    <span>
-                                        Trọng lượng: 60 kg
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <span class="w-[22px] h-[22px] flex items-center flex-shrink-0">
-                                        <svg width="19" height="15" viewbox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.95312 14.375C10.4766 14.375 10.7578 14.1016 10.7578 13.5781V1.14844C10.7578 0.625 10.4766 0.351562 9.95312 0.351562C9.42969 0.351562 9.14844 0.625 9.14844 1.14844V13.5781C9.14844 14.1016 9.42969 14.375 9.95312 14.375ZM1.79688 11.2656C2.32031 11.2656 2.59375 10.9922 2.59375 10.4688V4.25781C2.59375 3.73438 2.32031 3.46094 1.79688 3.46094C1.26562 3.46094 0.992188 3.73438 0.992188 4.25781V10.4688C0.992188 10.9922 1.26562 11.2656 1.79688 11.2656ZM18.1094 11.2656C18.6406 11.2656 18.9141 10.9922 18.9141 10.4688V4.25781C18.9141 3.73438 18.6406 3.46094 18.1094 3.46094C17.5859 3.46094 17.3125 3.73438 17.3125 4.25781V10.4688C17.3125 10.9922 17.5859 11.2656 18.1094 11.2656ZM5.875 9.29688C6.39844 9.29688 6.67188 9.02344 6.67188 8.49219V6.23438C6.67188 5.70312 6.39844 5.42969 5.875 5.42969C5.35156 5.42969 5.07812 5.70312 5.07812 6.23438V8.49219C5.07812 9.02344 5.35156 9.29688 5.875 9.29688ZM14.0312 9.29688C14.5547 9.29688 14.8281 9.02344 14.8281 8.49219V6.23438C14.8281 5.70312 14.5547 5.42969 14.0312 5.42969C13.5078 5.42969 13.2344 5.70312 13.2344 6.23438V8.49219C13.2344 9.02344 13.5078 9.29688 14.0312 9.29688Z" fill="#232323" />
-                                        </svg>
-                                    </span>
-                                    <span>
-                                        Chiều cao chân: 5 cm
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-x-4">
-                                    <span class="w-[22px] h-[22px] flex items-center flex-shrink-0">
-                                        <svg width="19" height="15" viewbox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.95312 14.375C10.4766 14.375 10.7578 14.1016 10.7578 13.5781V1.14844C10.7578 0.625 10.4766 0.351562 9.95312 0.351562C9.42969 0.351562 9.14844 0.625 9.14844 1.14844V13.5781C9.14844 14.1016 9.42969 14.375 9.95312 14.375ZM1.79688 11.2656C2.32031 11.2656 2.59375 10.9922 2.59375 10.4688V4.25781C2.59375 3.73438 2.32031 3.46094 1.79688 3.46094C1.26562 3.46094 0.992188 3.73438 0.992188 4.25781V10.4688C0.992188 10.9922 1.26562 11.2656 1.79688 11.2656ZM18.1094 11.2656C18.6406 11.2656 18.9141 10.9922 18.9141 10.4688V4.25781C18.9141 3.73438 18.6406 3.46094 18.1094 3.46094C17.5859 3.46094 17.3125 3.73438 17.3125 4.25781V10.4688C17.3125 10.9922 17.5859 11.2656 18.1094 11.2656ZM5.875 9.29688C6.39844 9.29688 6.67188 9.02344 6.67188 8.49219V6.23438C6.67188 5.70312 6.39844 5.42969 5.875 5.42969C5.35156 5.42969 5.07812 5.70312 5.07812 6.23438V8.49219C5.07812 9.02344 5.35156 9.29688 5.875 9.29688ZM14.0312 9.29688C14.5547 9.29688 14.8281 9.02344 14.8281 8.49219V6.23438C14.8281 5.70312 14.5547 5.42969 14.0312 5.42969C13.5078 5.42969 13.2344 5.70312 13.2344 6.23438V8.49219C13.2344 9.02344 13.5078 9.29688 14.0312 9.29688Z" fill="#232323" />
-                                        </svg>
-                                    </span>
-                                    <span>
-                                        Chỗ ngồi: 3
-                                    </span>
-                                </div>
+                                @endforeach
                             </div>
-                            <a href="#" title="Xem tất cả" class="text-[#424242] text-sm underline">
+                            <!-- <a href="#" title="Xem tất cả" class="text-[#424242] text-sm underline">
                                 Xem tất cả
-                            </a>
+                            </a> -->
                         </div>
+                        @endif
                     </div>
+                    @if (!empty($inventory))
                     <div class="group pt-10">
                         <div class="group__header flex items-center cursor-pointer">
                             <h3 class="text-[#212529] font-bold text-lg">
-                                Kích thước và Chi tiết kho hàng
+                                Chi tiết kho hàng
                             </h3>
                             <span class="w-7 h-7 ml-auto justify-center items-center flex transition-all">
                                 <svg width="14" height="9" viewbox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -222,46 +155,14 @@
                                     <thead class=" font-bold">
                                         <tr>
                                             <th class="p-3">
-                                                Kich thước
-                                            </th>
-                                            <th class="p-3">
-                                                Miền Bắc
-                                            </th>
-                                            <th class="p-3">
-                                                Miền Trung
-                                            </th>
-                                            <th class="p-3">
-                                                Miền Nam
+                                                Kho TLI
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td class="p-3">
-                                                1,2m x 2,4m
-                                            </td>
-                                            <td class="p-3">
-                                                0
-                                            </td>
-                                            <td class="p-3">
-                                                12
-                                            </td>
-                                            <td class="p-3">
-                                                43
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="p-3">
-                                                2,2m x 3,4m
-                                            </td>
-                                            <td class="p-3">
-                                                12
-                                            </td>
-                                            <td class="p-3">
-                                                43
-                                            </td>
-                                            <td class="p-3">
-                                                43
+                                                {{ $inventory->remain }}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -269,6 +170,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     <div class="group pt-10">
                         <div class="group__header flex items-center cursor-pointer">
                             <h3 class="text-[#212529] font-bold text-lg">
@@ -293,10 +195,11 @@
                                         MÃ SỐ SẢN PHẨM
                                     </h3>
                                     <p class="text-sm text-[#868E96] mt-2">
-                                        416530012113
+                                        {{ $data->code }}
                                     </p>
 
                                 </div>
+                                @if (!empty($data->designer))
                                 <div class="other__information px-6 py-5 border border-[#AEAEB2] rounded-lg overflow-hidden">
                                     <span class="other__icon w-6 h-6 rounded-ful flex items-center">
                                         <svg width="21" height="22" viewbox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -308,1285 +211,88 @@
                                         NHÀ THIẾT KẾ
                                     </h3>
                                     <p class="text-sm text-[#868E96] mt-2">
-                                        Anders Nørgaard
+                                    {{ $data->designer }}
                                     </p>
 
                                 </div>
-
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="sticky bg-white top-5 detail__total grid gap-y-8 max-w-[389px] w-full flex-shrink-0  py-8 px-4 border-[0.5px] border-[#BFBFBF] rounded-lg overflow-hidden">
-                <div class="detail__total-header flex items-center ">
-                    <div class="total__left">
-                        <p class="text-[#868E96] text-sm mb-1">
-                            Giá từ
-                        </p>
-                        <span class="total__price text-[#212529] font-semibold">
-                            48.490.000đ
+            <form action="{{ route('home.post-add-cart') }}" method="POST">
+                @csrf
+                <div class="sticky bg-white top-5 detail__total grid gap-y-8 max-w-[389px] w-full flex-shrink-0  py-8 px-4 border-[0.5px] border-[#BFBFBF] rounded-lg overflow-hidden">
+
+                    <input type="hidden" name="id_product" value="{{ $data->id }}">
+                    <div class="detail__total-header flex items-center ">
+                        <div class="total__left">
+                            <p class="text-[#868E96] text-sm mb-1">
+                                Giá từ
+                            </p>
+                            <span class="total__price text-[#212529] font-semibold">
+                                {{ number_format($data->price, 0, '.', '.') }}đ
+                            </span>
+                        </div>
+                        <span class="like w-6 h-6  flex items-center  justify-center ml-auto">
+                            <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
+                            </svg>
+                            <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
+                            </svg>
                         </span>
                     </div>
-                    <span class="like w-6 h-6  flex items-center  justify-center ml-auto">
-                        <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                        </svg>
-                        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                        </svg>
-                    </span>
+                    <button type="submit" class="hover:opacity-80 transition-all flex items-center justify-center text-white h-[46px] w-full bg-[#232323] text-base">
+                        Thêm vào giỏ hàng
+                    </button>
+                    <a href="#" class="hover:opacity-80 transition-all flex items-center justify-center text-white h-[46px] w-full bg-[#868E96] text-base">
+                        Tải hình ảnh 3D của sản phẩm
+                    </a>
+
                 </div>
-                <button class="hover:opacity-80 transition-all flex items-center justify-center text-white h-[46px] w-full bg-[#232323] text-base">
-                    Thêm vào giỏ hàng
-                </button>
-                <a href="#" class="hover:opacity-80 transition-all flex items-center justify-center text-white h-[46px] w-full bg-[#868E96] text-base">
-                    Tải hình ảnh 3D của sản phẩm
-                </a>
-            </div>
+            </form>
         </div>
         <div class="similar__products border-t border-[#EEEEEE] pt-12 mt-20">
+            @if (count($product_relation) > 0)
             <h2 class="similar__products--title text-[#212529] text-lg font-bold">
                 Các sản phẩm tương tự
             </h2>
 
             <div class="-mx-2">
                 <div class="slide__similar">
-
+                @foreach ($product_relation as $item)
                     <div class="similar__item">
 
                         <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="absolute top-3 left-3 text-white text-sm font-semibold z-10 bg-[#232323] px-3 py-[6px]">
-                                    -50%
-                                </span>
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
+                            @include('frontend.components.product')
                         </div>
                     </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="absolute top-3 left-3 text-white text-sm font-semibold z-10 bg-[#232323] px-3 py-[6px]">
-                                    -50%
-                                </span>
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="absolute top-3 left-3 text-white text-sm font-semibold z-10 bg-[#232323] px-3 py-[6px]">
-                                    -50%
-                                </span>
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="absolute top-3 left-3 text-white text-sm font-semibold z-10 bg-[#232323] px-3 py-[6px]">
-                                    -50%
-                                </span>
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                @endforeach
                 </div>
             </div>
-
+            @endif
+            @if (session()->has('data_viewed'))
             <h2 class="similar__products--title text-[#212529] text-lg font-bold">
                 Các sản phẩm bạn đã xem
             </h2>
+            <?php $productViewed = App\Models\Products::whereIn('id', session('data_viewed'))->where('status', 1)->get(); ?>
 
             <div class="-mx-2">
                 <div class="slide__similar">
-
+                @foreach ($productViewed as $item)
                     <div class="similar__item">
 
                         <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="absolute top-3 left-3 text-white text-sm font-semibold z-10 bg-[#232323] px-3 py-[6px]">
-                                    -50%
-                                </span>
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
+                            @include('frontend.components.product')
                         </div>
                     </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="absolute top-3 left-3 text-white text-sm font-semibold z-10 bg-[#232323] px-3 py-[6px]">
-                                    -50%
-                                </span>
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="absolute top-3 left-3 text-white text-sm font-semibold z-10 bg-[#232323] px-3 py-[6px]">
-                                    -50%
-                                </span>
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="absolute top-3 left-3 text-white text-sm font-semibold z-10 bg-[#232323] px-3 py-[6px]">
-                                    -50%
-                                </span>
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="similar__item">
-
-                        <div class="similar__box pt-6 pb-12 px-2">
-                            <div class="product__item border border-[#D1D1D6] relative transition duration-150 ease-out hover:ease-in  flex flex-col px-3 py-3 hover:shadow-[0px_8px_15px_rgba(0,0,0,0.15)]">
-                                <span class="like w-6 h-6  flex items-center  justify-center absolute right-3 top-3 z-10">
-                                    <svg width="18" height="16" viewbox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.757324 5.65771C0.757324 9.19385 3.7207 12.6719 8.40234 15.6602C8.57666 15.7681 8.82568 15.8843 9 15.8843C9.17432 15.8843 9.42334 15.7681 9.60596 15.6602C14.2793 12.6719 17.2427 9.19385 17.2427 5.65771C17.2427 2.71924 15.2256 0.644043 12.5361 0.644043C11.0005 0.644043 9.75537 1.37451 9 2.49512C8.26123 1.38281 6.99951 0.644043 5.46387 0.644043C2.77441 0.644043 0.757324 2.71924 0.757324 5.65771ZM2.09375 5.65771C2.09375 3.44971 3.52148 1.98047 5.44727 1.98047C7.00781 1.98047 7.9043 2.95166 8.43555 3.78174C8.65967 4.11377 8.80078 4.20508 9 4.20508C9.19922 4.20508 9.32373 4.10547 9.56445 3.78174C10.1372 2.96826 11.0005 1.98047 12.5527 1.98047C14.4785 1.98047 15.9062 3.44971 15.9062 5.65771C15.9062 8.74561 12.644 12.0742 9.17432 14.3818C9.09131 14.4399 9.0332 14.4814 9 14.4814C8.9668 14.4814 8.90869 14.4399 8.83398 14.3818C5.35596 12.0742 2.09375 8.74561 2.09375 5.65771Z" fill="#212529" />
-                                    </svg>
-                                    <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 19.8843C12.1743 19.8843 12.4233 19.7681 12.606 19.6602C17.2793 16.6719 20.2427 13.1938 20.2427 9.65771C20.2427 6.71924 18.2256 4.64404 15.6191 4.64404C14.0005 4.64404 12.7554 5.54053 12 6.91016C11.2612 5.54883 9.99951 4.64404 8.38086 4.64404C5.77441 4.64404 3.75732 6.71924 3.75732 9.65771C3.75732 13.1938 6.7207 16.6719 11.4023 19.6602C11.5767 19.7681 11.8257 19.8843 12 19.8843Z" fill="#212529" />
-                                    </svg>
-                                </span>
-                                <a href="DetaiProduct.page.html" class="flex items-center justify-center h-[280px] thumbnail" title="Sofa Modena 2 seater">
-                                    <img src="images/product__page.png" alt="product__page.png" class="w-full h-full object-contain" />
-                                </a>
-
-
-                                <div class="flex items-center mt-[22px]">
-                                    <div class="item">
-                                        <svg width="68" height="32" viewbox="0 0 68 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="15.9707" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 15.9707 0.414214)" fill="#BFBFBF" stroke="white" stroke-width="2" />
-                                            <rect x="33.9062" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 33.9062 0.414214)" fill="#868E96" stroke="white" stroke-width="2" />
-                                            <rect x="51.8438" y="0.414214" width="22" height="22" rx="3" transform="rotate(45 51.8438 0.414214)" fill="#424242" stroke="white" stroke-width="2" />
-                                        </svg>
-
-                                    </div>
-
-                                </div>
-
-                                <a href="DetaiProduct.page.html" class="content pt-4 mb-4" title="Sofa Modena 2 seater">
-                                    <h3 class="product__title text-[#212529] text-sm mb-1">Sofa Modena 2 seater</h3>
-                                    <p class="text-[#868E96] text-xs">Gỗ sồi, Gỗ keo, Thép không gỉ</p>
-                                </a>
-                                <div class="mt-auto flex items-center gap-1">
-                                    <p class=" text-base font-semibold">7.590.000</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                @endforeach
                 </div>
             </div>
+
+            @endif
         </div>
     </div>
 
