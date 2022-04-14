@@ -59,7 +59,7 @@ Route::get('/logout', 'LoginController@postLogout')->name('home.logout');
 // Đăng nhập facebook, google
 Route::get('/auth/redirect/{provider}', 'LoginController@redirect');
 
-Route::get('/callback/{provider}', 'LoginController@callback');
+Route::get('/auth/callback/{provider}', 'LoginController@callback');
 
 // Quên mật khẩu
 Route::get('/forgot-password', 'LoginController@forgotPassword')->name('home.forgot-password');
