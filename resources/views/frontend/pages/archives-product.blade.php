@@ -87,7 +87,7 @@
 
             {{ $data->links('frontend.components.pagination') }}
         </div>
-
+        @if (!empty($rooms))
         <div class="rooms-same-type mt-10 border-t border-[#EEEEEE] mb-20 pt-10">
             <h2 class="text-2xl  text-[#212529] font-semibold">
                 Ứng dụng trong bài trí phòng
@@ -109,6 +109,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </div>
 @stop
